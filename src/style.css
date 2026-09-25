@@ -1,20 +1,38 @@
 /* ============================================================
-   THEME — ink on ivory, in the manner of Bapu.
-   Colour is used sparingly: gold, maroon and turmeric appear only
-   as washes on the drawings and on the names.
+   THEME — Bapu's wedding colours, framed like the printed card:
+   a deep maroon ground scattered with gold, an ivory arched card,
+   and illustrations in ink filled with flat, bright colour.
    ============================================================ */
 
 :root {
-  --paper: #fbf6ec;
-  --paper-deep: #f3e9d6;
+  /* ground & paper */
+  --maroon: #7a1c24;
+  --maroon-deep: #5c131a;
+  --ivory: #fbf3e1;
+  --ivory-deep: #f4e6c8;
+
+  /* ink */
   --ink: #3a2622;
-  --ink-fill: #2e1d1a;
-  --ink-soft: #6b5650;
-  --maroon: #7e1f2b;
-  --gold: #b8862b;
-  --gold-text: #8a6220;
-  --gold-wash: #c9973a;
-  --turmeric: #e3a72f;
+  --ink-fill: #2b1a17;
+  --ink-soft: #6b5048;
+
+  /* Bapu's wedding palette */
+  --kumkum: #b8262c;
+  --gold: #c9973a;
+  --gold-deep: #a9782a;
+  --gold-light: #ecc978;
+  --gold-text: #8a5f1c;
+  --turmeric: #eaa82a;
+  --marigold: #ea7a24;
+  --kanduva: #d9582a;
+  --pink: #d8568c;
+  --pink-deep: #b43b74;
+  --pink-light: #eb93b6;
+  --green: #3f8b42;
+  --green-light: #74ad4e;
+  --skin: #edc39a;
+  --cream: #f8e9bf;
+  --brown: #8e5a2e;
 
   --display: "Cormorant Garamond", "Cormorant", Georgia, serif;
   --body: "EB Garamond", Georgia, "Times New Roman", serif;
@@ -23,6 +41,9 @@
   /* soft, liquid easing — never mechanical */
   --ease-ink: cubic-bezier(0.45, 0.05, 0.3, 1);
   --ease-float: cubic-bezier(0.2, 0.75, 0.25, 1);
+
+  /* gold motifs scattered on maroon, as on the card */
+  --motif: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='%23d9a441' fill-opacity='.34'%3E%3Cpath d='M14 9.5l1.1 3.4 3.4 1.1-3.4 1.1L14 18.5l-1.1-3.4-3.4-1.1 3.4-1.1z'/%3E%3Cpath d='M42 37.5l1.1 3.4 3.4 1.1-3.4 1.1L42 46.5l-1.1-3.4-3.4-1.1 3.4-1.1z'/%3E%3Ccircle cx='42' cy='14' r='1.1'/%3E%3Ccircle cx='14' cy='42' r='1.1'/%3E%3C/g%3E%3C/svg%3E");
 
   color-scheme: light;
 }
@@ -45,11 +66,11 @@ html.is-locked {
 body {
   margin: 0;
   min-height: 100svh;
-  background-color: var(--paper);
-  /* barely-there paper grain + a warm centre */
+  overflow-x: hidden;
+  background-color: var(--maroon);
   background-image:
-    radial-gradient(ellipse 90% 60% at 50% 0%, rgba(255, 253, 247, 0.9), transparent 70%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.23 0 0 0 0 0.15 0 0 0 0 0.13 0 0 0 0.035 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+    radial-gradient(ellipse 120% 70% at 50% 0%, rgba(150, 40, 46, 0.55), transparent 70%),
+    var(--motif);
   color: var(--ink);
   font-family: var(--body);
   font-size: 1.125rem;
@@ -82,7 +103,7 @@ h2 {
 
 .telugu {
   font-family: var(--telugu);
-  color: var(--maroon);
+  color: var(--kumkum);
   font-size: clamp(1.55rem, 5.4vw, 2rem);
   line-height: 1.3;
   letter-spacing: 0.01em;
@@ -97,13 +118,91 @@ h2 {
   color: var(--gold-text);
 }
 
+/* ============================================================
+   THE CARD — an ivory arched panel on maroon, gold-framed
+   ============================================================ */
+
+.garland {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.garland .art {
+  width: 100%;
+  height: auto;
+}
+
+.card {
+  position: relative;
+  z-index: 2;
+  max-width: 38rem;
+  margin: 6.5rem auto 2.5rem;
+  background:
+    radial-gradient(ellipse 100% 40% at 50% 0%, #fffaf0, transparent 70%),
+    var(--ivory);
+  border-radius: 50% 50% 16px 16px / 10rem 10rem 16px 16px;
+  box-shadow:
+    0 0 0 1px rgba(236, 201, 120, 0.5),
+    0 40px 90px -30px rgba(20, 0, 0, 0.6);
+}
+
+/* double gold frame inside the card */
+.card::before,
+.card::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50% 50% 10px 10px / 9.3rem 9.3rem 10px 10px;
+}
+
+.card::before {
+  inset: 10px;
+  border: 1.5px solid var(--gold);
+}
+
+.card::after {
+  inset: 15px;
+  border: 1px solid rgba(201, 151, 58, 0.45);
+  border-radius: 50% 50% 7px 7px / 9rem 9rem 7px 7px;
+}
+
+.card__kalasham {
+  position: absolute;
+  top: -68px;
+  left: 50%;
+  z-index: 4;
+  width: 104px;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 6px 10px rgba(40, 0, 0, 0.25));
+}
+
+/* gold triangle border at the foot of the card */
+.card__band {
+  position: relative;
+  z-index: 1;
+  height: 34px;
+  margin: 0 10px 10px;
+  border-radius: 0 0 8px 8px;
+  background-color: var(--maroon);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='34'%3E%3Cpath d='M1 26 L11 9 L21 26 Z' fill='none' stroke='%23d9a441' stroke-width='1.3'/%3E%3Ccircle cx='11' cy='21' r='1.8' fill='%23d9a441'/%3E%3C/svg%3E"),
+    linear-gradient(var(--gold), var(--gold)),
+    linear-gradient(var(--gold), var(--gold));
+  background-repeat: repeat-x, no-repeat, no-repeat;
+  background-position: center, 0 4px, 0 calc(100% - 4px);
+  background-size: 22px 34px, 100% 1px, 100% 1px;
+}
+
 /* ---------- layout ---------- */
 
 .section {
   position: relative;
-  max-width: 40rem;
+  z-index: 1;
+  max-width: 34rem;
   margin: 0 auto;
-  padding: clamp(3.5rem, 9vh, 6rem) 1.25rem;
+  padding: clamp(3.25rem, 8vh, 5.5rem) 1.75rem;
   text-align: center;
 }
 
@@ -116,7 +215,7 @@ h2 {
   gap: 0.4em;
   min-height: 2.9rem;
   padding: 0.7rem 1.6rem;
-  border: 1px solid rgba(126, 31, 43, 0.45);
+  border: 1px solid var(--gold);
   border-radius: 999px;
   background: transparent;
   color: var(--maroon);
@@ -130,13 +229,27 @@ h2 {
   transition:
     background-color 0.5s var(--ease-float),
     border-color 0.5s var(--ease-float),
-    color 0.5s var(--ease-float);
+    color 0.5s var(--ease-float),
+    box-shadow 0.5s var(--ease-float);
 }
 
 .btn:hover {
   background-color: var(--maroon);
   border-color: var(--maroon);
-  color: var(--paper);
+  color: var(--ivory);
+}
+
+.btn--solid {
+  background: linear-gradient(180deg, #8e2530, var(--maroon));
+  border-color: var(--gold);
+  color: var(--gold-light);
+  box-shadow: inset 0 0 0 3px var(--maroon), inset 0 0 0 4px rgba(236, 201, 120, 0.55);
+}
+
+.btn--solid:hover {
+  background: var(--kumkum);
+  border-color: var(--gold-light);
+  color: #fff6de;
 }
 
 .btn:focus-visible,
@@ -148,19 +261,13 @@ h2 {
 
 .btn--quiet {
   margin-top: 1.6rem;
-  border-color: rgba(184, 134, 43, 0.55);
   color: var(--gold-text);
 }
 
-.btn--quiet:hover {
-  background-color: var(--gold-text);
-  border-color: var(--gold-text);
-}
-
 /* ============================================================
-   LINE ART — drawn stroke by stroke
+   ILLUSTRATIONS — drawn stroke by stroke, then coloured in
    Each .ink path has pathLength="1"; its --d / --t (delay / time)
-   are set per stroke in art.js.
+   are set per stroke in art.js. Each .paint fill has its own --d.
    ============================================================ */
 
 .art {
@@ -178,6 +285,15 @@ h2 {
   stroke-dasharray: 1 1;
   stroke-dashoffset: 1;
   opacity: 0;
+}
+
+.art .ink--gold {
+  stroke: var(--gold-deep);
+}
+
+.art .ink--ray {
+  stroke: #fff4d2;
+  stroke-opacity: 0.85;
 }
 
 .is-drawn .ink {
@@ -198,42 +314,38 @@ h2 {
   }
 }
 
-/* washes, fills and small details fade in after the ink */
-.art .wash,
+/* colour fills and small details, laid in after the ink */
+.art .paint,
 .art .ink-fill,
 .art .ink-dot,
 .art .ink-ring,
 .art .ink-static,
-.art .jasmine-bud {
+.art .jasmine-bud,
+.art .strand {
   opacity: 0;
 }
 
-.wash {
+.paint {
   stroke: none;
+  --o: 1;
 }
-.wash--gold {
-  fill: var(--gold-wash);
-  --o: 0.36;
-}
-.wash--maroon {
-  fill: var(--maroon);
-  --o: 0.3;
-}
-.wash--turmeric {
-  fill: var(--turmeric);
-  --o: 0.9;
-}
-.wash--flame-core {
-  fill: #fff6df;
-  --o: 0.95;
-}
-.dot.wash--maroon {
-  --o: 0.85;
-}
-.dot.wash--gold,
-.dot.wash--turmeric {
-  --o: 0.95;
-}
+.paint--gold { fill: var(--gold); }
+.paint--gold-deep { fill: var(--gold-deep); }
+.paint--gold-light { fill: var(--gold-light); --o: 0.85; }
+.paint--turmeric { fill: var(--turmeric); }
+.paint--marigold { fill: var(--marigold); }
+.paint--kumkum { fill: var(--kumkum); }
+.paint--kanduva { fill: var(--kanduva); }
+.paint--pink { fill: var(--pink); }
+.paint--pink-deep { fill: var(--pink-deep); }
+.paint--pink-light { fill: var(--pink-light); }
+.paint--green { fill: var(--green); }
+.paint--green-light { fill: var(--green-light); }
+.paint--skin { fill: var(--skin); }
+.paint--cream { fill: var(--cream); }
+.paint--brown { fill: var(--brown); }
+.paint--ivory { fill: #fffaf0; }
+.paint--flame-core { fill: #fff1b8; }
 
 .ink-fill {
   fill: var(--ink-fill);
@@ -245,7 +357,7 @@ h2 {
 }
 .ink-ring {
   fill: none;
-  stroke: var(--gold);
+  stroke: var(--gold-deep);
   stroke-width: 1;
   --o: 1;
 }
@@ -257,15 +369,26 @@ h2 {
 .jasmine-bud {
   fill: #fffdf6;
   stroke: var(--ink);
-  stroke-width: 0.7;
+  stroke-width: 0.6;
   --o: 1;
 }
 
-.is-drawn :is(.wash, .ink-fill, .ink-dot, .ink-ring, .ink-static, .jasmine-bud) {
-  animation: wash 1.1s ease-out var(--d) both;
+/* the marigold strand along the garland — two dotted lines, offset */
+.strand {
+  fill: none;
+  stroke-width: 9;
+  stroke-linecap: round;
+  stroke-dasharray: 0 16;
+  --o: 1;
+}
+.strand--a { stroke: var(--marigold); }
+.strand--b { stroke: var(--turmeric); }
+
+.is-drawn :is(.paint, .ink-fill, .ink-dot, .ink-ring, .ink-static, .jasmine-bud, .strand) {
+  animation: lay 0.9s ease-out var(--d) both;
 }
 
-@keyframes wash {
+@keyframes lay {
   from {
     opacity: 0;
   }
@@ -286,6 +409,27 @@ h2 {
   }
   to {
     opacity: var(--o);
+    transform: none;
+  }
+}
+
+/* the mandapam's halo rises like the sun */
+.halo {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+.is-drawn .halo {
+  animation: sunrise 1.8s var(--ease-float) var(--d) both;
+}
+
+@keyframes sunrise {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.92);
+  }
+  to {
+    opacity: 1;
     transform: none;
   }
 }
@@ -352,7 +496,7 @@ h2 {
 }
 
 /* ============================================================
-   INTRO — the diya blooms, then the invitation opens
+   INTRO — a small arched card on maroon; the diya blooms
    ============================================================ */
 
 .intro {
@@ -361,8 +505,11 @@ h2 {
   z-index: 50;
   display: grid;
   place-items: center;
-  padding: 2rem 1.25rem;
-  background: var(--paper);
+  padding: 1.5rem 1rem;
+  background-color: var(--maroon);
+  background-image:
+    radial-gradient(ellipse 90% 60% at 50% 40%, rgba(160, 44, 50, 0.6), transparent 70%),
+    var(--motif);
   transition:
     opacity 1.2s ease,
     visibility 1.2s;
@@ -373,20 +520,37 @@ h2 {
   visibility: hidden;
 }
 
-.intro__inner {
+.intro__card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: min(100%, 22rem);
+  padding: 3.2rem 1.5rem 2.4rem;
   text-align: center;
+  background: var(--ivory);
+  border-radius: 50% 50% 14px 14px / 7rem 7rem 14px 14px;
+  box-shadow:
+    0 0 0 1px rgba(236, 201, 120, 0.5),
+    0 30px 70px -20px rgba(20, 0, 0, 0.6);
   transition: transform 1.3s var(--ease-float);
 }
 
-.intro.is-leaving .intro__inner {
-  transform: translateY(-24px);
+.intro__card::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 1.5px solid var(--gold);
+  border-radius: 50% 50% 9px 9px / 6.4rem 6.4rem 9px 9px;
+  pointer-events: none;
+}
+
+.intro.is-leaving .intro__card {
+  transform: translateY(-24px) scale(0.98);
 }
 
 .intro__art {
-  width: min(52vw, 190px);
+  width: min(46vw, 170px);
 }
 
 .intro__blessing,
@@ -398,12 +562,13 @@ h2 {
 }
 
 .intro__blessing {
-  margin-top: 0.4rem;
+  margin-top: 0.3rem;
+  font-size: clamp(1.35rem, 5vw, 1.7rem);
   animation-delay: 2.6s;
 }
 
 .intro__eyebrow {
-  margin-top: 1.3rem;
+  margin-top: 1.1rem;
   animation-delay: 3s;
 }
 
@@ -423,7 +588,8 @@ h2 {
 }
 
 .intro__open {
-  margin-top: 2.2rem;
+  position: relative;
+  margin-top: 1.8rem;
   animation-delay: 3.7s;
 }
 
@@ -444,23 +610,27 @@ h2 {
 
 .hero {
   display: flex;
-  min-height: 100svh;
+  min-height: min(100svh, 60rem);
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 3rem;
-  padding-bottom: 5rem;
+  padding-top: 6rem;
+  padding-bottom: 4rem;
+}
+
+.hero__blessing {
+  margin-bottom: 1.1rem;
 }
 
 .hero__art {
-  width: min(92vw, 440px);
+  width: min(100%, 460px);
 }
 
 .hero__names {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 1.4rem;
+  margin-top: 1.6rem;
   font-family: var(--display);
   font-style: italic;
   font-weight: 600;
@@ -469,7 +639,7 @@ h2 {
 }
 
 .hero__names .name {
-  font-size: clamp(2.3rem, 9.2vw, 3.6rem);
+  font-size: clamp(2.2rem, 9vw, 3.5rem);
   letter-spacing: 0.005em;
 }
 
@@ -481,18 +651,18 @@ h2 {
 }
 
 .hero__date {
-  margin-top: 1.2rem;
+  margin-top: 1.1rem;
   font-style: italic;
   color: var(--ink-soft);
 }
 
 .scroll-cue {
   position: absolute;
-  bottom: 1.25rem;
+  bottom: 1rem;
   left: 50%;
   display: block;
   width: 20px;
-  height: 52px;
+  height: 48px;
   margin-left: -10px;
 }
 
@@ -531,15 +701,17 @@ h2 {
    INVITATION
    ============================================================ */
 
-.invitation__art {
-  width: 104px;
-  margin: 0 auto 1rem;
+.invitation {
+  padding-top: 1rem;
 }
 
 .hosts {
-  margin-top: 2rem;
   font-size: 1.08rem;
   line-height: 1.7;
+}
+
+.hosts .nowrap {
+  white-space: nowrap;
 }
 
 .hosts em {
@@ -597,8 +769,8 @@ h2 {
    ============================================================ */
 
 .details__thoranam {
-  width: min(100%, 420px);
-  margin: 0 auto 3rem;
+  width: min(100%, 400px);
+  margin: 0 auto 2.6rem;
 }
 
 .date-row {
@@ -611,7 +783,7 @@ h2 {
 
 .date-row__side {
   padding: 0.85rem 0;
-  border-block: 1px solid rgba(184, 134, 43, 0.55);
+  border-block: 1px solid var(--gold);
   font-size: 0.9rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -645,15 +817,23 @@ h2 {
   font-family: var(--display);
   font-size: 4rem;
   font-weight: 600;
-  color: var(--maroon);
+  color: var(--kumkum);
 }
 
+/* the muhurtham sits in a small gold-edged medallion */
 .muhurtham {
+  position: relative;
   margin: 3rem auto 0;
-  padding: 1.6rem 1rem 1.5rem;
-  max-width: 20rem;
-  border-radius: 999px / 60%;
-  background: radial-gradient(ellipse at center, rgba(227, 167, 47, 0.13), transparent 70%);
+  padding: 1.7rem 1rem 1.6rem;
+  max-width: 19rem;
+  border-radius: 999px;
+  background:
+    radial-gradient(ellipse at center, rgba(234, 168, 42, 0.22), rgba(234, 168, 42, 0.06) 70%),
+    var(--ivory);
+  box-shadow:
+    0 0 0 1.5px var(--gold),
+    0 0 0 6px var(--ivory),
+    0 0 0 7px rgba(201, 151, 58, 0.5);
 }
 
 .muhurtham__time {
@@ -663,7 +843,7 @@ h2 {
   font-size: clamp(2.4rem, 9vw, 3rem);
   font-weight: 600;
   line-height: 1;
-  color: var(--maroon);
+  color: var(--kumkum);
 }
 
 .muhurtham__after {
@@ -707,14 +887,34 @@ h2 {
 }
 
 /* ============================================================
-   COUNTDOWN
+   COUNTDOWN — a maroon band across the card
    ============================================================ */
+
+.band {
+  max-width: none;
+  margin: 1rem 0;
+  padding-block: 3rem;
+  color: var(--ivory);
+  background-color: var(--maroon);
+  background-image: var(--motif);
+  box-shadow:
+    inset 0 1px 0 var(--gold),
+    inset 0 -1px 0 var(--gold),
+    inset 0 5px 0 var(--maroon),
+    inset 0 6px 0 rgba(236, 201, 120, 0.55),
+    inset 0 -5px 0 var(--maroon),
+    inset 0 -6px 0 rgba(236, 201, 120, 0.55);
+}
+
+.band .eyebrow {
+  color: var(--gold-light);
+}
 
 .countdown__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   max-width: 28rem;
-  margin: 1.8rem auto 0;
+  margin: 1.6rem auto 0;
 }
 
 .unit {
@@ -725,16 +925,16 @@ h2 {
 }
 
 .unit + .unit {
-  border-left: 1px solid rgba(184, 134, 43, 0.4);
+  border-left: 1px solid rgba(236, 201, 120, 0.4);
 }
 
 .unit__num {
   font-family: var(--display);
   font-size: clamp(2.2rem, 9vw, 3.3rem);
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.1;
   font-variant-numeric: lining-nums tabular-nums;
-  color: var(--ink);
+  color: var(--gold-light);
 }
 
 .unit__label {
@@ -742,7 +942,7 @@ h2 {
   font-size: 0.68rem;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: var(--gold-text);
+  color: rgba(251, 243, 225, 0.85);
   padding-left: 0.26em;
 }
 
@@ -751,7 +951,7 @@ h2 {
   font-family: var(--display);
   font-style: italic;
   font-size: 1.5rem;
-  color: var(--maroon);
+  color: var(--gold-light);
 }
 
 /* ============================================================
@@ -791,11 +991,12 @@ h2 {
    ============================================================ */
 
 .closing {
+  padding-top: 1.5rem;
   padding-bottom: 6.5rem;
 }
 
 .closing__art {
-  width: 92px;
+  width: 96px;
   margin: 0 auto;
 }
 
@@ -818,6 +1019,20 @@ h2 {
   color: var(--maroon);
 }
 
+.closing__lotus {
+  position: absolute;
+  bottom: 0.8rem;
+  width: 74px;
+}
+
+.closing__lotus--l {
+  left: 0.9rem;
+}
+
+.closing__lotus--r {
+  right: 0.9rem;
+}
+
 /* ============================================================
    MUSIC TOGGLE
    ============================================================ */
@@ -832,13 +1047,14 @@ h2 {
   width: 2.9rem;
   height: 2.9rem;
   padding: 0;
-  border: 1px solid rgba(184, 134, 43, 0.55);
+  border: 1px solid var(--gold);
   border-radius: 50%;
-  background: rgba(251, 246, 236, 0.92);
-  color: var(--maroon);
+  background: var(--maroon);
+  color: var(--gold-light);
   cursor: pointer;
   opacity: 0;
   pointer-events: none;
+  box-shadow: 0 8px 20px -8px rgba(20, 0, 0, 0.6);
   transition: opacity 1s ease 1.5s;
 }
 
@@ -862,6 +1078,37 @@ h2 {
 }
 
 /* ---------- small screens ---------- */
+
+@media (max-width: 480px) {
+  .card {
+    margin: 5.2rem 10px 1.5rem;
+    border-radius: 50% 50% 14px 14px / 7.5rem 7.5rem 14px 14px;
+  }
+  .card::before {
+    inset: 7px;
+    border-radius: 50% 50% 9px 9px / 7rem 7rem 9px 9px;
+  }
+  .card::after {
+    inset: 11px;
+    border-radius: 50% 50% 6px 6px / 6.7rem 6.7rem 6px 6px;
+  }
+  .card__kalasham {
+    top: -56px;
+    width: 88px;
+  }
+  .card__band {
+    margin: 0 7px 7px;
+  }
+  .hero {
+    padding-top: 3.5rem;
+  }
+  .section {
+    padding-inline: 1.35rem;
+  }
+  .band {
+    padding-inline: 0.75rem;
+  }
+}
 
 @media (max-width: 420px) {
   .date-row {
@@ -887,6 +1134,9 @@ h2 {
   .unit__label {
     letter-spacing: 0.16em;
     padding-left: 0.16em;
+  }
+  .closing__lotus {
+    width: 58px;
   }
 }
 

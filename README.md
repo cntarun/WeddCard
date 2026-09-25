@@ -1,12 +1,17 @@
 # Tarun & Priyamvada — Wedding Invitation
 
-A single-page wedding invitation in the manner of **Bapu**: ink line drawings
-on ivory paper, drawn stroke by stroke as you arrive and scroll, with colour
-used only as small washes of gold, maroon and turmeric.
+A single-page wedding invitation in the manner of **Bapu**, framed like the
+printed card: a deep maroon ground scattered with gold, an ivory arched card
+with a kalasham on top, and a marigold-and-mango-leaf thoranam across the top.
+The illustrations are drawn in ink stroke by stroke, then filled with Bapu's
+flat wedding colours — kumkum, turmeric, marigold, parrot green, rani pink
+and gold.
 
 - **Opening** — a diya is drawn in ink and its flame blooms; the Telugu
   blessing appears; guests tap *Open the invitation*.
-- **Hero** — the bride showering talambralu over the groom's head, drawn live.
+- **Hero** — beneath a golden mandapam arch with a rising sunburst, the bride
+  (pink saree, green blouse) showers talambralu over the groom (cream pancha,
+  orange kanduva), both seated on turmeric peetalu — drawn, then coloured in.
 - **Invitation** — the card's wording: grandparents, parents, both names.
 - **The Wedding** — Sunday · 13 December 2026 · 4:00 PM onwards,
   **Muhurtham 7:25 PM, dinner follows**, venue and map link.
@@ -45,7 +50,7 @@ the evening ends at a different time.
 ```
 src/
 ├── config.js     ← all content
-├── art.js        ← the line drawings (SVG paths + draw timing)
+├── art.js        ← the illustrations (SVG ink + colour, draw timing)
 ├── main.js       ← page, reveal-on-scroll, countdown, music
 ├── calendar.js   ← .ics file + Google Calendar link
 └── style.css     ← palette, type, animation
@@ -54,8 +59,9 @@ public/
 └── favicon.svg
 ```
 
-**Palette** (tokens at the top of `style.css`): ivory `#FBF6EC`, ink
-`#3A2622`, maroon `#7E1F2B`, gold `#B8862B`, turmeric `#E3A72F`.
+**Palette** (tokens at the top of `style.css`): maroon `#7A1C24`, ivory
+`#FBF3E1`, ink `#3A2622`, kumkum `#B8262C`, gold `#C9973A`, turmeric
+`#EAA82A`, marigold `#EA7A24`, rani pink `#D8568C`, parrot green `#3F8B42`.
 **Type**: Cormorant Garamond (names), EB Garamond (text), Gurajada (Telugu).
 
 ## How the drawing works
@@ -63,10 +69,15 @@ public/
 Each illustration in `art.js` is a list of strokes. Every `<path>` has
 `pathLength="1"`, so CSS can animate `stroke-dashoffset` from 1 to 0 with no
 measuring in JavaScript. Each stroke's duration follows its length, and the
-next begins before the last finishes, so it moves like a pen. Colour washes
-and the ink-filled hair fade in afterwards, a little off-register, like
-watercolour laid over a drawing. No animation library is used; the whole page
-is about 9 KB of JavaScript and 4 KB of CSS gzipped.
+next begins before the last finishes, so it moves like a pen. The flat
+colours are then laid in region by region beneath the ink, like a brush
+filling the drawing. No animation library is used; the whole page is about
+11 KB of JavaScript and 5 KB of CSS gzipped, with no images to download.
+
+The illustrations are original drawings in Bapu's manner. Bapu's own
+paintings are under copyright (until 2074), so they aren't used here; the
+artwork from the printed card can be added if the original file and
+permission to use it are available.
 
 ## Deploy (GitHub Pages)
 

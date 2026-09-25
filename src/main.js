@@ -1,7 +1,7 @@
 import "./style.css";
 import { config } from "./config.js";
 import { googleCalendarUrl } from "./calendar.js";
-import { couple, diya, kalasham, thoranam, lotusRule, sprig } from "./art.js";
+import { couple, diya, kalasham, thoranam, lotusRule, sprig, garland, cornerLotus } from "./art.js";
 
 const { groom, bride, wedding: w, venue, music } = config;
 
@@ -9,6 +9,12 @@ const esc = (s) =>
   String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 // Card convention: "(Late)" in italics.
 const withLate = (s) => esc(s).replace(/ ?\(Late\)/g, "&nbsp;<em>(Late)</em>");
+// Each couple stays together; narrow screens break the line at the "&".
+const hostLine = (s) =>
+  s
+    .split(" & ")
+    .map((part, i, all) => `<span class="nowrap">${withLate(part)}${i < all.length - 1 ? " &amp;" : ""}</span>`)
+    .join(" ");
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -16,24 +22,25 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").match
 
 const intro = `
   <div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="intro-title">
-    <div class="intro__inner">
+    <div class="intro__card">
       <div class="intro__art is-drawn">${diya()}</div>
       <p class="telugu intro__blessing" lang="te">${esc(config.blessing)}</p>
       <p class="eyebrow intro__eyebrow">The wedding of</p>
       <p class="intro__names" id="intro-title">${esc(groom.firstName)} <span>&amp;</span> ${esc(bride.firstName)}</p>
-      <button type="button" class="btn intro__open" id="open-invite">Open the invitation</button>
+      <button type="button" class="btn btn--solid intro__open" id="open-invite">Open the invitation</button>
     </div>
   </div>`;
 
 const hero = `
   <header class="section hero" id="top">
+    <p class="telugu hero__blessing" lang="te" data-reveal>${esc(config.blessing)}</p>
     <div class="hero__art">${couple()}</div>
     <h1 class="hero__names">
-      <span class="name" data-reveal style="--i:0">${esc(groom.name)}</span>
-      <span class="amp" data-reveal style="--i:1" aria-label="and">&amp;</span>
-      <span class="name" data-reveal style="--i:2">${esc(bride.name)}</span>
+      <span class="name" data-reveal style="--i:1">${esc(groom.name)}</span>
+      <span class="amp" data-reveal style="--i:2" aria-label="and">&amp;</span>
+      <span class="name" data-reveal style="--i:3">${esc(bride.name)}</span>
     </h1>
-    <p class="hero__date" data-reveal style="--i:3">${esc(w.dateLong)} <span aria-hidden="true">·</span> ${esc(venue.city)}</p>
+    <p class="hero__date" data-reveal style="--i:4">${esc(w.dateLong)} <span aria-hidden="true">·</span> ${esc(venue.city)}</p>
     <a class="scroll-cue" href="#invitation" aria-label="Read the invitation" data-reveal style="--i:5">
       <svg viewBox="0 0 20 60" aria-hidden="true"><path pathLength="1" d="M10 2 C6 18 14 30 10 46 M4 40 L10 52 L16 40"/></svg>
     </a>
@@ -41,10 +48,8 @@ const hero = `
 
 const invitation = `
   <section class="section invitation" id="invitation" aria-label="Invitation">
-    <div class="invitation__art" data-draw>${kalasham()}</div>
-    <p class="telugu invitation__blessing" lang="te" data-reveal>${esc(config.blessing)}</p>
-    <div class="hosts" data-reveal style="--i:1">
-      ${config.hosts.map((h) => `<p>${withLate(h)}</p>`).join("")}
+    <div class="hosts" data-reveal>
+      ${config.hosts.map((h) => `<p>${hostLine(h)}</p>`).join("")}
     </div>
     <p class="invite-line" data-reveal style="--i:2">${esc(config.inviteLine)}</p>
 
@@ -99,7 +104,7 @@ const details = `
   </section>`;
 
 const countdown = `
-  <section class="section countdown" id="countdown" aria-labelledby="countdown-title">
+  <section class="section countdown band" id="countdown" aria-labelledby="countdown-title">
     <p class="eyebrow" id="countdown-title" data-reveal>Until the Muhurtham</p>
     <div class="countdown__grid" data-reveal style="--i:1" role="timer" aria-live="off">
       ${["days", "hours", "minutes", "seconds"]
@@ -116,7 +121,7 @@ const calendar = `
     <p class="eyebrow" data-reveal>Save the evening</p>
     <h2 class="save__title" id="calendar-title" data-reveal style="--i:1">Add it to your calendar</h2>
     <div class="save__actions" data-reveal style="--i:2">
-      <a class="btn" href="wedding.ics" download="Tarun-Priyamvada-Wedding.ics">Apple · Outlook</a>
+      <a class="btn btn--solid" href="wedding.ics" download="Tarun-Priyamvada-Wedding.ics">Apple · Outlook</a>
       <a class="btn" href="${esc(googleCalendarUrl(config))}" target="_blank" rel="noopener noreferrer">Google Calendar</a>
     </div>
     <p class="save__note" data-reveal style="--i:3">${esc(w.dateLong)} · ${esc(w.startsAt)} (IST)</p>
@@ -128,7 +133,10 @@ const footer = `
     <p class="telugu closing__blessing" lang="te" data-reveal>${esc(config.closing.blessing)}</p>
     <p class="closing__line" data-reveal style="--i:1">${esc(config.closing.line)}</p>
     <p class="closing__names" data-reveal style="--i:2">${esc(groom.firstName)} &amp; ${esc(bride.firstName)}</p>
-  </footer>`;
+    <div class="closing__lotus closing__lotus--l" data-draw>${cornerLotus()}</div>
+    <div class="closing__lotus closing__lotus--r" data-draw>${cornerLotus(true)}</div>
+  </footer>
+  <div class="card__band" aria-hidden="true"></div>`;
 
 const musicToggle = music.src
   ? `<button type="button" class="music" id="music" aria-pressed="false" aria-label="Play music${music.title ? `: ${esc(music.title)}` : ""}">
@@ -138,7 +146,13 @@ const musicToggle = music.src
   : "";
 
 document.getElementById("app").innerHTML =
-  intro + `<main id="main" tabindex="-1" inert>${hero + invitation + details + countdown + calendar + footer}</main>` + musicToggle;
+  intro +
+  `<div class="garland" aria-hidden="true">${garland(window.innerWidth)}</div>` +
+  `<main class="card" id="main" tabindex="-1" inert>` +
+  `<div class="card__kalasham">${kalasham()}</div>` +
+  hero + invitation + details + countdown + calendar + footer +
+  `</main>` +
+  musicToggle;
 
 /* ---------- intro → open the invitation ---------- */
 
@@ -151,7 +165,10 @@ function openInvitation() {
   introEl.classList.add("is-leaving");
   document.documentElement.classList.remove("is-locked");
   mainEl.inert = false;
-  document.querySelector(".hero__art").classList.add("is-drawn");
+  // The garland is hung, the kalasham set on the arch, and the couple drawn.
+  for (const sel of [".garland", ".card__kalasham", ".hero__art"]) {
+    document.querySelector(sel).classList.add("is-drawn");
+  }
   document.body.classList.add("is-open");
   startMusic();
   // Names rise in while the couple is still being drawn.
