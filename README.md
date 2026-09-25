@@ -1,25 +1,29 @@
 # Tarun & Priyamvada — Wedding Invitation
 
-A single-page wedding invitation in the manner of **Bapu**, framed like the
-printed card: a deep maroon ground scattered with gold, an ivory arched card
-with a kalasham on top, and a marigold-and-mango-leaf thoranam across the top.
-The illustrations are drawn in ink stroke by stroke, then filled with Bapu's
-flat wedding colours — kumkum, turmeric, marigold, parrot green, rani pink
-and gold.
+A single-page wedding invitation built from **Bapu's wedding paintings**: white
+paper, a mango-leaf thoranam, the ornate red-and-yellow arch, banana plants,
+blue kolam motifs and the painted border band. Each painting was cut into
+layers so every piece can move on its own.
 
-- **Opening** — a diya is drawn in ink and its flame blooms; the Telugu
-  blessing appears; guests tap *Open the invitation*.
-- **Hero** — beneath a golden mandapam arch with a rising sunburst, the bride
-  (pink saree, green blouse) showers talambralu over the groom (cream pancha,
-  orange kanduva), both seated on turmeric peetalu — drawn, then coloured in.
-- **Invitation** — the card's wording: grandparents, parents, both names.
-- **The Wedding** — Sunday · 13 December 2026 · 4:00 PM onwards,
-  **Muhurtham 7:25 PM, dinner follows**, venue and map link.
-- **Countdown** to the Muhurtham, and **Add to calendar** (Apple / Outlook
-  `.ics` + Google Calendar).
+- **Opening** — the thoranam is hung from the centre outwards, the arch
+  unfurls, the banana plants grow; Ganesha is sketched in ink, coloured in,
+  and dances, with the dhol keeping the beat and the offerings beside him.
+- **Hero** — on *Open the invitation*, Ganesha rises away and the couple
+  exchanging garlands is sketched and painted into the same frame, then
+  showered with akshintalu (turmeric rice and petals).
+- **Invitation** — the card's wording, with the blue kolam motifs blooming
+  around "with".
+- **The Wedding** — beneath the jeelakarra-bellam painting: Sunday ·
+  13 December 2026 · 4:00 PM onwards, **Muhurtham 7:25 PM, dinner follows**,
+  venue and map link.
+- **Countdown** — beneath the mangalya-dharana painting, on the band's red,
+  digits rolling as they change.
+- **Add to calendar** (Apple / Outlook `.ics` + Google Calendar).
+- **Closing** — saptapadi around a glowing, flickering sacred fire, banana
+  plants either side, and the credit *Paintings by Bapu*.
 - **Music toggle** — appears automatically once a song is set (see below).
 
-Everything honours *Reduce Motion*: those guests see the finished drawings.
+Everything honours *Reduce Motion*: those guests see the finished paintings.
 
 ## Run it
 
@@ -50,34 +54,34 @@ the evening ends at a different time.
 ```
 src/
 ├── config.js     ← all content
-├── art.js        ← the illustrations (SVG ink + colour, draw timing)
 ├── main.js       ← page, reveal-on-scroll, countdown, music
 ├── calendar.js   ← .ics file + Google Calendar link
 └── style.css     ← palette, type, animation
 public/
+├── art/          ← the painting layers (colour + ink), thoranam and band tiles
 ├── og-image.jpg  ← WhatsApp / social preview (1200×630)
 └── favicon.svg
 ```
 
-**Palette** (tokens at the top of `style.css`): maroon `#7A1C24`, ivory
-`#FBF3E1`, ink `#3A2622`, kumkum `#B8262C`, gold `#C9973A`, turmeric
-`#EAA82A`, marigold `#EA7A24`, rani pink `#D8568C`, parrot green `#3F8B42`.
-**Type**: Cormorant Garamond (names), EB Garamond (text), Gurajada (Telugu).
+**Palette** (sampled from the paintings; tokens at the top of `style.css`):
+vermilion `#E23823`, turmeric-lemon `#FEFC55`, leaf green `#2F7A3A`,
+kolam blue `#3F4AAE`, banana-flower pink `#E0457B`, on white.
+**Type**: Rozha One (names), EB Garamond (text), Gurajada (Telugu).
 
-## How the drawing works
+## How the paintings move
 
-Each illustration in `art.js` is a list of strokes. Every `<path>` has
-`pathLength="1"`, so CSS can animate `stroke-dashoffset` from 1 to 0 with no
-measuring in JavaScript. Each stroke's duration follows its length, and the
-next begins before the last finishes, so it moves like a pen. The flat
-colours are then laid in region by region beneath the ink, like a brush
-filling the drawing. No animation library is used; the whole page is about
-11 KB of JavaScript and 5 KB of CSS gzipped, with no images to download.
+Each painting was cut into transparent layers (arch, banana plants, motifs,
+figures) that share one coordinate grid — the 1276-pixel frame of the
+originals — so they reassemble exactly; on phones the figures are enlarged
+and the banana plants tucked to the edges. Every figure has two layers: its
+black ink linework and its full colour. A CSS mask sweeps the ink in like a
+pen, then a second mask lets the colour spread outwards like wet paint. The
+thoranam is a seamless tile repeated across the screen, each piece swaying
+from the top; the border band is a seamless tile too. No animation library
+is used (about 6 KB of JavaScript and 5 KB of CSS gzipped); the painting
+layers total about 700 KB and load progressively.
 
-The illustrations are original drawings in Bapu's manner. Bapu's own
-paintings are under copyright (until 2074), so they aren't used here; the
-artwork from the printed card can be added if the original file and
-permission to use it are available.
+The paintings are Bapu's and are credited on the page.
 
 ## Deploy (GitHub Pages)
 

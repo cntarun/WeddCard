@@ -1,51 +1,43 @@
 /* ============================================================
-   THEME — Bapu's wedding colours, framed like the printed card:
-   a deep maroon ground scattered with gold, an ivory arched card,
-   and illustrations in ink filled with flat, bright colour.
+   THEME — Bapu's wedding paintings.
+   White paper, a mango-leaf thoranam, the red-and-yellow arch,
+   banana plants, blue kolam motifs and the painted border band.
+   Every colour below is sampled from the paintings themselves.
    ============================================================ */
 
 :root {
-  /* ground & paper */
-  --maroon: #7a1c24;
-  --maroon-deep: #5c131a;
-  --ivory: #fbf3e1;
-  --ivory-deep: #f4e6c8;
+  --paper: #ffffff;
+  --vermilion: #e23823; /* the border band's red */
+  --vermilion-deep: #bf2417; /* the same red, dark enough for text */
+  --lemon: #fefc55; /* the band's turmeric-lemon yellow */
+  --turmeric: #ffe14a;
+  --leaf: #2f7a3a;
+  --blue: #3f4aae; /* the kolam motifs */
+  --pink: #e0457b; /* the banana flower */
+  --ink: #1f1714;
+  --text: #3a2a22;
+  --text-soft: #6a5448;
 
-  /* ink */
-  --ink: #3a2622;
-  --ink-fill: #2b1a17;
-  --ink-soft: #6b5048;
-
-  /* Bapu's wedding palette */
-  --kumkum: #b8262c;
-  --gold: #c9973a;
-  --gold-deep: #a9782a;
-  --gold-light: #ecc978;
-  --gold-text: #8a5f1c;
-  --turmeric: #eaa82a;
-  --marigold: #ea7a24;
-  --kanduva: #d9582a;
-  --pink: #d8568c;
-  --pink-deep: #b43b74;
-  --pink-light: #eb93b6;
-  --green: #3f8b42;
-  --green-light: #74ad4e;
-  --skin: #edc39a;
-  --cream: #f8e9bf;
-  --brown: #8e5a2e;
-
-  --display: "Cormorant Garamond", "Cormorant", Georgia, serif;
+  --display: "Rozha One", Georgia, serif;
   --body: "EB Garamond", Georgia, "Times New Roman", serif;
   --telugu: "Gurajada", "Noto Serif Telugu", "Noto Sans Telugu", serif;
 
-  /* soft, liquid easing — never mechanical */
-  --ease-ink: cubic-bezier(0.45, 0.05, 0.3, 1);
   --ease-float: cubic-bezier(0.2, 0.75, 0.25, 1);
-
-  /* gold motifs scattered on maroon, as on the card */
-  --motif: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='%23d9a441' fill-opacity='.34'%3E%3Cpath d='M14 9.5l1.1 3.4 3.4 1.1-3.4 1.1L14 18.5l-1.1-3.4-3.4-1.1 3.4-1.1z'/%3E%3Cpath d='M42 37.5l1.1 3.4 3.4 1.1-3.4 1.1L42 46.5l-1.1-3.4-3.4-1.1 3.4-1.1z'/%3E%3Ccircle cx='42' cy='14' r='1.1'/%3E%3Ccircle cx='14' cy='42' r='1.1'/%3E%3C/g%3E%3C/svg%3E");
+  --ease-bloom: cubic-bezier(0.2, 0.9, 0.3, 1.25);
 
   color-scheme: light;
+}
+
+/* animatable mask positions for the "ink, then colour" reveal */
+@property --sketch {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: -25%;
+}
+@property --spread {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
 }
 
 *,
@@ -67,11 +59,8 @@ body {
   margin: 0;
   min-height: 100svh;
   overflow-x: hidden;
-  background-color: var(--maroon);
-  background-image:
-    radial-gradient(ellipse 120% 70% at 50% 0%, rgba(150, 40, 46, 0.55), transparent 70%),
-    var(--motif);
-  color: var(--ink);
+  background: var(--paper);
+  color: var(--text);
   font-family: var(--body);
   font-size: 1.125rem;
   line-height: 1.6;
@@ -79,7 +68,14 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-main:focus {
+main {
+  position: relative;
+  z-index: 2;
+  overflow-x: clip;
+}
+
+main:focus,
+.hero__names:focus {
   outline: none;
 }
 
@@ -88,6 +84,11 @@ h1,
 h2 {
   margin: 0;
   text-wrap: balance;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 .visually-hidden {
@@ -103,378 +104,629 @@ h2 {
 
 .telugu {
   font-family: var(--telugu);
-  color: var(--kumkum);
+  color: var(--vermilion-deep);
   font-size: clamp(1.55rem, 5.4vw, 2rem);
   line-height: 1.3;
-  letter-spacing: 0.01em;
 }
 
 .eyebrow {
   font-family: var(--body);
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--gold-text);
-}
-
-/* ============================================================
-   THE CARD — an ivory arched panel on maroon, gold-framed
-   ============================================================ */
-
-.garland {
-  position: absolute;
-  inset: 0 0 auto;
-  z-index: 3;
-  pointer-events: none;
-}
-
-.garland .art {
-  width: 100%;
-  height: auto;
-}
-
-.card {
-  position: relative;
-  z-index: 2;
-  max-width: 38rem;
-  margin: 6.5rem auto 2.5rem;
-  background:
-    radial-gradient(ellipse 100% 40% at 50% 0%, #fffaf0, transparent 70%),
-    var(--ivory);
-  border-radius: 50% 50% 16px 16px / 10rem 10rem 16px 16px;
-  box-shadow:
-    0 0 0 1px rgba(236, 201, 120, 0.5),
-    0 40px 90px -30px rgba(20, 0, 0, 0.6);
-}
-
-/* double gold frame inside the card */
-.card::before,
-.card::after {
-  content: "";
-  position: absolute;
-  pointer-events: none;
-  border-radius: 50% 50% 10px 10px / 9.3rem 9.3rem 10px 10px;
-}
-
-.card::before {
-  inset: 10px;
-  border: 1.5px solid var(--gold);
-}
-
-.card::after {
-  inset: 15px;
-  border: 1px solid rgba(201, 151, 58, 0.45);
-  border-radius: 50% 50% 7px 7px / 9rem 9rem 7px 7px;
-}
-
-.card__kalasham {
-  position: absolute;
-  top: -68px;
-  left: 50%;
-  z-index: 4;
-  width: 104px;
-  transform: translateX(-50%);
-  filter: drop-shadow(0 6px 10px rgba(40, 0, 0, 0.25));
-}
-
-/* gold triangle border at the foot of the card */
-.card__band {
-  position: relative;
-  z-index: 1;
-  height: 34px;
-  margin: 0 10px 10px;
-  border-radius: 0 0 8px 8px;
-  background-color: var(--maroon);
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='34'%3E%3Cpath d='M1 26 L11 9 L21 26 Z' fill='none' stroke='%23d9a441' stroke-width='1.3'/%3E%3Ccircle cx='11' cy='21' r='1.8' fill='%23d9a441'/%3E%3C/svg%3E"),
-    linear-gradient(var(--gold), var(--gold)),
-    linear-gradient(var(--gold), var(--gold));
-  background-repeat: repeat-x, no-repeat, no-repeat;
-  background-position: center, 0 4px, 0 calc(100% - 4px);
-  background-size: 22px 34px, 100% 1px, 100% 1px;
+  color: var(--blue);
 }
 
 /* ---------- layout ---------- */
 
 .section {
   position: relative;
-  z-index: 1;
-  max-width: 34rem;
+  max-width: 40rem;
   margin: 0 auto;
-  padding: clamp(3.25rem, 8vh, 5.5rem) 1.75rem;
+  padding: clamp(3rem, 8vh, 5rem) 1.25rem;
   text-align: center;
 }
 
-/* ---------- buttons ---------- */
+/* ---------- buttons: painted like the border band ---------- */
 
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.4em;
-  min-height: 2.9rem;
-  padding: 0.7rem 1.6rem;
-  border: 1px solid var(--gold);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--maroon);
+  min-height: 3rem;
+  padding: 0.7rem 1.7rem;
+  border: 2px solid var(--lemon);
+  border-radius: 6px;
+  background: var(--vermilion);
+  box-shadow: 0 0 0 2px var(--vermilion), 0 6px 16px -8px rgba(160, 30, 10, 0.6);
+  color: var(--lemon);
   font-family: var(--body);
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
   transition:
-    background-color 0.5s var(--ease-float),
-    border-color 0.5s var(--ease-float),
-    color 0.5s var(--ease-float),
-    box-shadow 0.5s var(--ease-float);
+    background-color 0.4s var(--ease-float),
+    color 0.4s var(--ease-float),
+    transform 0.4s var(--ease-float);
 }
 
 .btn:hover {
-  background-color: var(--maroon);
-  border-color: var(--maroon);
-  color: var(--ivory);
+  background: var(--vermilion-deep);
+  transform: translateY(-2px);
 }
 
-.btn--solid {
-  background: linear-gradient(180deg, #8e2530, var(--maroon));
-  border-color: var(--gold);
-  color: var(--gold-light);
-  box-shadow: inset 0 0 0 3px var(--maroon), inset 0 0 0 4px rgba(236, 201, 120, 0.55);
+.btn--light {
+  background: var(--lemon);
+  border-color: var(--vermilion);
+  box-shadow: 0 0 0 2px var(--lemon), 0 0 0 3px var(--vermilion);
+  color: var(--vermilion-deep);
 }
 
-.btn--solid:hover {
-  background: var(--kumkum);
-  border-color: var(--gold-light);
-  color: #fff6de;
+.btn--light:hover {
+  background: var(--vermilion);
+  color: var(--lemon);
 }
 
 .btn:focus-visible,
-.music:focus-visible,
-.scroll-cue:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 3px;
-}
-
-.btn--quiet {
-  margin-top: 1.6rem;
-  color: var(--gold-text);
+.music:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 5px;
 }
 
 /* ============================================================
-   ILLUSTRATIONS — drawn stroke by stroke, then coloured in
-   Each .ink path has pathLength="1"; its --d / --t (delay / time)
-   are set per stroke in art.js. Each .paint fill has its own --d.
+   PAINTING LAYERS on a shared grid
+   A .stage declares its grid size (--cw × --ch); each .layer is
+   placed at --x / --y with width --w in the same units.
    ============================================================ */
 
-.art {
+.stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--cw) / var(--ch);
+}
+
+.layer {
+  position: absolute;
+  left: calc(var(--x) / var(--cw) * 100%);
+  top: calc(var(--y) / var(--ch) * 100%);
+  width: calc(var(--w) / var(--cw) * 100%);
+}
+
+.layer img,
+.paint img {
   display: block;
   width: 100%;
   height: auto;
-  overflow: visible;
-}
-
-.art .ink {
-  fill: none;
-  stroke: var(--ink);
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 1 1;
-  stroke-dashoffset: 1;
-  opacity: 0;
-}
-
-.art .ink--gold {
-  stroke: var(--gold-deep);
-}
-
-.art .ink--ray {
-  stroke: #fff4d2;
-  stroke-opacity: 0.85;
-}
-
-.is-drawn .ink {
-  animation: draw var(--t) var(--ease-ink) var(--d) both;
-}
-
-@keyframes draw {
-  0% {
-    stroke-dashoffset: 1;
-    opacity: 0;
-  }
-  2% {
-    opacity: 1;
-  }
-  100% {
-    stroke-dashoffset: 0;
-    opacity: 1;
-  }
-}
-
-/* colour fills and small details, laid in after the ink */
-.art .paint,
-.art .ink-fill,
-.art .ink-dot,
-.art .ink-ring,
-.art .ink-static,
-.art .jasmine-bud,
-.art .strand {
-  opacity: 0;
 }
 
 .paint {
-  stroke: none;
-  --o: 1;
-}
-.paint--gold { fill: var(--gold); }
-.paint--gold-deep { fill: var(--gold-deep); }
-.paint--gold-light { fill: var(--gold-light); --o: 0.85; }
-.paint--turmeric { fill: var(--turmeric); }
-.paint--marigold { fill: var(--marigold); }
-.paint--kumkum { fill: var(--kumkum); }
-.paint--kanduva { fill: var(--kanduva); }
-.paint--pink { fill: var(--pink); }
-.paint--pink-deep { fill: var(--pink-deep); }
-.paint--pink-light { fill: var(--pink-light); }
-.paint--green { fill: var(--green); }
-.paint--green-light { fill: var(--green-light); }
-.paint--skin { fill: var(--skin); }
-.paint--cream { fill: var(--cream); }
-.paint--brown { fill: var(--brown); }
-.paint--ivory { fill: #fffaf0; }
-.paint--flame-core { fill: #fff1b8; }
-
-.ink-fill {
-  fill: var(--ink-fill);
-  --o: 1;
-}
-.ink-dot {
-  fill: var(--ink);
-  --o: 1;
-}
-.ink-ring {
-  fill: none;
-  stroke: var(--gold-deep);
-  stroke-width: 1;
-  --o: 1;
-}
-.ink-static {
-  fill: none;
-  stroke: var(--ink);
-  --o: 1;
-}
-.jasmine-bud {
-  fill: #fffdf6;
-  stroke: var(--ink);
-  stroke-width: 0.6;
-  --o: 1;
+  position: relative;
 }
 
-/* the marigold strand along the garland — two dotted lines, offset */
-.strand {
-  fill: none;
-  stroke-width: 9;
-  stroke-linecap: round;
-  stroke-dasharray: 0 16;
-  --o: 1;
-}
-.strand--a { stroke: var(--marigold); }
-.strand--b { stroke: var(--turmeric); }
-
-.is-drawn :is(.paint, .ink-fill, .ink-dot, .ink-ring, .ink-static, .jasmine-bud, .strand) {
-  animation: lay 0.9s ease-out var(--d) both;
+.layer.paint {
+  position: absolute;
 }
 
-@keyframes lay {
+.paint__colour {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---------- ink first: a pen sketches the linework top to bottom ---------- */
+
+.js .paint__ink {
+  -webkit-mask-image: linear-gradient(174deg, #000 var(--sketch), transparent calc(var(--sketch) + 22%));
+  mask-image: linear-gradient(174deg, #000 var(--sketch), transparent calc(var(--sketch) + 22%));
+}
+
+/* ---------- then colour: it spreads outwards like wet paint ---------- */
+
+.js .paint__colour {
+  -webkit-mask-image: radial-gradient(circle farthest-corner at 50% 40%, #000 calc(var(--spread) - 24%), transparent var(--spread));
+  mask-image: radial-gradient(circle farthest-corner at 50% 40%, #000 calc(var(--spread) - 24%), transparent var(--spread));
+}
+
+.is-ready .ganesha-group .paint__ink,
+.is-in .paint__ink {
+  animation: sketch 1.7s cubic-bezier(0.45, 0.1, 0.35, 1) var(--delay, 0s) both;
+}
+
+.is-ready .ganesha-group .paint__colour,
+.is-in .paint__colour {
+  animation: spread 1.9s cubic-bezier(0.3, 0.2, 0.3, 1) calc(var(--delay, 0s) + 1.2s) both;
+}
+
+@keyframes sketch {
   from {
-    opacity: 0;
+    --sketch: -25%;
   }
   to {
-    opacity: var(--o);
+    --sketch: 110%;
   }
 }
 
-/* talambralu — rice drifts down onto his head */
-.is-drawn .rice {
-  animation: rice 1.4s var(--ease-float) var(--d) both;
-}
-
-@keyframes rice {
+@keyframes spread {
   from {
-    opacity: 0;
-    transform: translateY(-7px);
+    --spread: 0%;
   }
   to {
-    opacity: var(--o);
-    transform: none;
+    --spread: 124%;
   }
 }
 
-/* the mandapam's halo rises like the sun */
-.halo {
-  transform-box: fill-box;
+/* ============================================================
+   THORANAM — painted tiles hung from the centre outwards, then
+   swaying in a breeze (skewed from the top so the string stays put)
+   ============================================================ */
+
+.garland {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  height: calc(100vw * 81 / 640);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.garland span {
+  flex: 0 0 auto;
+  height: 100%;
+  aspect-ratio: 272 / 120;
+  margin-right: -1px;
+  background: url("/art/thoranam-tile.webp") center / 100% 100% no-repeat;
+  transform-origin: 50% 0;
+  translate: 0 -105%;
+}
+
+.is-ready .garland span {
+  animation:
+    hang 1.1s var(--ease-bloom) calc(var(--from-mid) * 90ms) both,
+    breeze 3.8s ease-in-out calc(1.4s + var(--i) * -0.55s) infinite alternate;
+}
+
+@keyframes hang {
+  from {
+    translate: 0 -105%;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+@keyframes breeze {
+  from {
+    transform: skewX(2.2deg);
+  }
+  to {
+    transform: skewX(-2.2deg);
+  }
+}
+
+/* ============================================================
+   FRAME PIECES — arch unfurls, banana plants grow and sway,
+   kolam motifs bloom
+   ============================================================ */
+
+.arch img {
+  clip-path: inset(0 50% 0 50%);
+}
+
+.is-ready .h-arch img,
+.scene.is-in .arch img {
+  animation: unfurl 1.6s cubic-bezier(0.3, 0.7, 0.2, 1) 0.25s both;
+}
+
+@keyframes unfurl {
+  from {
+    clip-path: inset(0 50% 0 50%);
+    opacity: 0.3;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+.banana {
+  transform-origin: 50% 100%;
+  opacity: 0;
+}
+
+.sway {
   transform-origin: 50% 100%;
 }
 
-.is-drawn .halo {
-  animation: sunrise 1.8s var(--ease-float) var(--d) both;
+.is-ready .h-bl,
+.is-ready .h-br,
+.banana.is-drawn {
+  animation: grow 1.6s var(--ease-bloom) 0.55s both;
 }
 
-@keyframes sunrise {
+.is-ready .banana .sway,
+.banana.is-drawn .sway {
+  animation: sway 5.2s ease-in-out 2s infinite alternate;
+}
+
+.is-ready .banana--r .sway,
+.banana--r.is-drawn .sway {
+  animation-delay: -0.6s;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes grow {
   from {
     opacity: 0;
-    transform: translateY(14px) scale(0.92);
+    scale: 0.55 0.12;
+  }
+  25% {
+    opacity: 1;
   }
   to {
     opacity: 1;
-    transform: none;
+    scale: 1 1;
   }
 }
 
-/* the diya's flame blooms, then breathes */
-.flame {
-  opacity: 0;
-  transform-box: fill-box;
-  transform-origin: 50% 100%;
+@keyframes sway {
+  from {
+    rotate: -1.8deg;
+  }
+  to {
+    rotate: 1.8deg;
+  }
 }
 
-.is-drawn .flame {
+.motif img,
+.with__motif {
+  opacity: 0;
+}
+
+.is-ready .motif img,
+.with.is-drawn .with__motif {
   animation:
-    bloom 1.3s cubic-bezier(0.2, 0.9, 0.3, 1.15) var(--d) both,
-    flicker 2.8s ease-in-out calc(var(--d) + 1.3s) infinite alternate;
+    bloom 1.3s var(--ease-bloom) 1.3s both,
+    breathe 3.6s ease-in-out 2.8s infinite alternate;
+}
+
+.with.is-drawn .with__motif {
+  animation-delay: 0.1s, 1.5s;
 }
 
 @keyframes bloom {
   from {
     opacity: 0;
-    transform: scale(0.15);
+    scale: 0;
+    rotate: -90deg;
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    scale: 1;
+    rotate: 0deg;
   }
 }
 
-@keyframes flicker {
+@keyframes breathe {
+  from {
+    scale: 1;
+  }
+  to {
+    scale: 1.06;
+  }
+}
+
+/* ============================================================
+   HERO — one living painting. Ganesha dances first; opening the
+   invitation brings the couple, garlanded, into the same frame.
+   ============================================================ */
+
+.hero {
+  position: relative;
+  padding-bottom: 2.5rem;
+}
+
+.stage--hero {
+  --cw: 640;
+  --ch: 780;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* phone layout: figures larger, banana plants tucked to the edges */
+.h-arch { --x: -10; --y: 0; --w: 660; z-index: 1; }
+.h-bl { --x: -36; --y: 420; --w: 140; z-index: 2; }
+.h-br { --x: 534; --y: 424; --w: 144; z-index: 2; }
+.h-ml,
+.h-mr { display: none; }
+.h-ganesha { --x: 160; --y: 104; --w: 320; z-index: 3; }
+.h-dhol { --x: 44; --y: 488; --w: 250; z-index: 4; }
+.h-offer { --x: 348; --y: 482; --w: 250; z-index: 4; }
+.h-couple { --x: 138; --y: 106; --w: 364; z-index: 3; }
+
+/* wide layout: exactly the painting's composition */
+@media (min-width: 720px) {
+  .garland {
+    height: calc(min(100vw, 1100px) * 120 / 1276);
+  }
+  .stage--hero {
+    --cw: 1276;
+    --ch: 715;
+  }
+  .h-arch { --x: 151; --y: 13; --w: 975; }
+  .h-bl { --x: 16; --y: 188; --w: 203; }
+  .h-br { --x: 1055; --y: 189; --w: 208; }
+  .h-ml,
+  .h-mr { display: block; z-index: 2; }
+  .h-ml { --x: 257; --y: 333; --w: 211; }
+  .h-mr { --x: 806; --y: 332; --w: 218; }
+  .h-ganesha { --x: 447; --y: 146; --w: 417; }
+  .h-dhol { --x: 215; --y: 442; --w: 360; }
+  .h-offer { --x: 707; --y: 435; --w: 357; }
+  .h-couple { --x: 464; --y: 144; --w: 379; }
+}
+
+/* Ganesha dances; the dhol keeps the beat; the offerings float */
+.dance {
+  transform-origin: 50% 92%;
+}
+
+.is-ready .dance {
+  animation: dance 2.8s ease-in-out 4.6s infinite;
+}
+
+@keyframes dance {
+  0%,
+  50%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-2.5%) rotate(-2.4deg);
+  }
+  75% {
+    transform: translateY(-2.5%) rotate(2.4deg);
+  }
+}
+
+.beat {
+  transform-origin: 45% 60%;
+}
+
+.is-ready .beat {
+  animation: beat 1.4s ease-out 4.8s infinite;
+}
+
+@keyframes beat {
+  0%,
+  22%,
+  50%,
+  72%,
+  100% {
+    scale: 1;
+  }
+  8% {
+    scale: 1.04;
+  }
+  58% {
+    scale: 1.025;
+  }
+}
+
+.is-ready .float {
+  animation: float 3.4s ease-in-out 5s infinite alternate;
+}
+
+@keyframes float {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -3%;
+  }
+}
+
+/* opening the invitation: Ganesha rises away, the instruments settle */
+.is-open .h-ganesha {
+  animation: ascend 1.1s cubic-bezier(0.5, 0, 0.75, 0.4) both;
+}
+
+.is-open .h-dhol,
+.is-open .h-offer {
+  animation: settle 0.9s ease-in both;
+}
+
+.is-open .ganesha-group {
+  pointer-events: none;
+}
+
+@keyframes ascend {
+  to {
+    opacity: 0;
+    translate: 0 -14%;
+    scale: 0.9;
+  }
+}
+
+@keyframes settle {
+  to {
+    opacity: 0;
+    translate: 0 12%;
+  }
+}
+
+.couple {
+  visibility: hidden;
+}
+
+.couple.is-in {
+  visibility: visible;
+}
+
+/* akshintalu — turmeric rice and petals, showered once over the couple */
+.shower {
+  position: absolute;
+  inset: -12% -8% 10%;
+  pointer-events: none;
+}
+
+.shower i {
+  position: absolute;
+  top: 0;
+  left: var(--sx);
+  width: 4px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f5c522;
+  box-shadow: inset 0 0 0 0.6px rgba(150, 90, 0, 0.5);
+  opacity: 0;
+}
+
+.shower .petal {
+  width: 8px;
+  height: 10px;
+  border-radius: 60% 0 60% 0;
+  background: var(--vermilion);
+  box-shadow: none;
+}
+
+.shower .petal--pink {
+  background: var(--pink);
+}
+
+.couple.is-in .shower i {
+  animation: fall var(--dur) cubic-bezier(0.35, 0.1, 0.6, 1) calc(3.1s + var(--dl)) both;
+}
+
+@keyframes fall {
   0% {
-    transform: scale(1, 1) skewX(0deg);
+    opacity: 0;
+    transform: translate(0, 0) rotate(0deg);
   }
-  35% {
-    transform: scale(0.97, 1.04) skewX(-1.2deg);
+  12% {
+    opacity: 1;
   }
-  70% {
-    transform: scale(1.02, 0.98) skewX(0.8deg);
+  80% {
+    opacity: 1;
   }
   100% {
-    transform: scale(0.99, 1.03) skewX(-0.4deg);
+    opacity: 0;
+    transform: translate(var(--drift), var(--fall, 420px)) rotate(var(--spin));
   }
 }
 
-.art--mirror {
-  transform: scaleX(-1);
+/* hero text: the intro swaps for the names */
+.hero__text {
+  display: grid;
+  max-width: 40rem;
+  margin: 0.5rem auto 0;
+  padding: 0 1.25rem;
+  text-align: center;
+}
+
+.hero__intro,
+.hero__names {
+  grid-area: 1 / 1;
+}
+
+.hero__intro {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* the names wait, invisible, beneath the intro — never in its way */
+.hero__names {
+  pointer-events: none;
+}
+
+.is-open .hero__names {
+  pointer-events: auto;
+}
+
+[data-rise] {
+  opacity: 0;
+}
+
+.is-ready [data-rise] {
+  animation: rise 1s var(--ease-float) calc(2.8s + var(--i) * 0.18s) both;
+}
+
+.is-open .hero__intro {
+  animation: leave 0.6s ease both;
+  pointer-events: none;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes leave {
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+    visibility: hidden;
+  }
+}
+
+.hero__intro .eyebrow {
+  margin-top: 0.8rem;
+}
+
+.hero__short {
+  margin-top: 0.2rem;
+  font-family: var(--display);
+  font-size: clamp(2rem, 8vw, 2.8rem);
+  line-height: 1.1;
+  color: var(--vermilion-deep);
+}
+
+.hero__short span,
+.hero__names .amp {
+  color: var(--blue);
+}
+
+#open-invite {
+  margin-top: 1.5rem;
+}
+
+.hero__names h1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--display);
+  font-weight: 400;
+  line-height: 1.08;
+  color: var(--vermilion-deep);
+}
+
+.hero__names .name {
+  font-size: clamp(2.2rem, 9vw, 3.6rem);
+}
+
+.hero__names .amp {
+  margin: 0.1rem 0;
+  font-size: clamp(1.5rem, 5.4vw, 2.1rem);
+}
+
+.hero__date {
+  margin-top: 0.9rem;
+  font-style: italic;
+  color: var(--text-soft);
 }
 
 /* ============================================================
@@ -483,7 +735,7 @@ h2 {
 
 .js [data-reveal] {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(18px);
   transition:
     opacity 1.1s ease-out,
     transform 1.5s var(--ease-float);
@@ -496,204 +748,151 @@ h2 {
 }
 
 /* ============================================================
-   INTRO — a small arched card on maroon; the diya blooms
+   BORDER BAND — the painted red-and-yellow strip, drawn across
    ============================================================ */
 
-.intro {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  display: grid;
-  place-items: center;
-  padding: 1.5rem 1rem;
-  background-color: var(--maroon);
-  background-image:
-    radial-gradient(ellipse 90% 60% at 50% 40%, rgba(160, 44, 50, 0.6), transparent 70%),
-    var(--motif);
-  transition:
-    opacity 1.2s ease,
-    visibility 1.2s;
-}
-
-.intro.is-leaving {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.intro__card {
+.rule {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: min(100%, 22rem);
-  padding: 3.2rem 1.5rem 2.4rem;
-  text-align: center;
-  background: var(--ivory);
-  border-radius: 50% 50% 14px 14px / 7rem 7rem 14px 14px;
-  box-shadow:
-    0 0 0 1px rgba(236, 201, 120, 0.5),
-    0 30px 70px -20px rgba(20, 0, 0, 0.6);
-  transition: transform 1.3s var(--ease-float);
+  max-width: 1100px;
+  height: clamp(26px, 6.4vw, 44px);
+  margin: 0 auto;
 }
 
-.intro__card::before {
+/* the band itself is a layer inside, so the (unclipped) rule can be
+   seen by the scroll observer while the band is still rolled up */
+.rule::before {
   content: "";
   position: absolute;
-  inset: 9px;
-  border: 1.5px solid var(--gold);
-  border-radius: 50% 50% 9px 9px / 6.4rem 6.4rem 9px 9px;
-  pointer-events: none;
+  inset: 0;
+  background: url("/art/band-tile.webp") center / auto 100% repeat-x;
 }
 
-.intro.is-leaving .intro__card {
-  transform: translateY(-24px) scale(0.98);
+.js .rule::before {
+  clip-path: inset(0 50% 0 50%);
 }
 
-.intro__art {
-  width: min(46vw, 170px);
+.rule.is-drawn::before {
+  animation: unfurl 1.7s cubic-bezier(0.3, 0.7, 0.2, 1) both;
 }
 
-.intro__blessing,
-.intro__eyebrow,
-.intro__names,
-.intro__open {
-  opacity: 0;
-  animation: rise 1.2s var(--ease-float) both;
-}
-
-.intro__blessing {
-  margin-top: 0.3rem;
-  font-size: clamp(1.35rem, 5vw, 1.7rem);
-  animation-delay: 2.6s;
-}
-
-.intro__eyebrow {
-  margin-top: 1.1rem;
-  animation-delay: 3s;
-}
-
-.intro__names {
-  margin-top: 0.3rem;
-  font-family: var(--display);
-  font-style: italic;
-  font-weight: 600;
-  font-size: clamp(1.7rem, 6.5vw, 2.1rem);
-  color: var(--maroon);
-  animation-delay: 3.2s;
-}
-
-.intro__names span {
-  font-weight: 500;
-  color: var(--gold);
-}
-
-.intro__open {
-  position: relative;
-  margin-top: 1.8rem;
-  animation-delay: 3.7s;
-}
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+.rule--edge {
+  max-width: none;
 }
 
 /* ============================================================
-   HERO
+   SCENES — a painting beneath its own arch
    ============================================================ */
 
-.hero {
-  display: flex;
-  min-height: min(100svh, 60rem);
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-top: 6rem;
-  padding-bottom: 4rem;
-}
-
-.hero__blessing {
-  margin-bottom: 1.1rem;
-}
-
-.hero__art {
-  width: min(100%, 460px);
-}
-
-.hero__names {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 1.6rem;
-  font-family: var(--display);
-  font-style: italic;
-  font-weight: 600;
-  line-height: 1.05;
-  color: var(--maroon);
-}
-
-.hero__names .name {
-  font-size: clamp(2.2rem, 9vw, 3.5rem);
-  letter-spacing: 0.005em;
-}
-
-.hero__names .amp {
-  margin: 0.15rem 0;
-  font-size: clamp(1.4rem, 5vw, 1.9rem);
-  font-weight: 500;
-  color: var(--gold);
-}
-
-.hero__date {
-  margin-top: 1.1rem;
-  font-style: italic;
-  color: var(--ink-soft);
-}
-
-.scroll-cue {
-  position: absolute;
-  bottom: 1rem;
+.scene {
+  position: relative;
   left: 50%;
-  display: block;
-  width: 20px;
-  height: 48px;
-  margin-left: -10px;
+  width: var(--scene-w);
+  margin: 0 0 2.5rem;
+  translate: -50% 0;
 }
 
-.scroll-cue svg {
-  width: 100%;
-  height: 100%;
-  fill: none;
-  stroke: var(--gold);
-  stroke-width: 1.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
+.scene--jeelakarra { --scene-w: 106vw; }
+.scene--mangalyam { --scene-w: 124vw; }
+.scene--saptapadi { --scene-w: 150vw; }
 
-.scroll-cue path {
-  stroke-dasharray: 1 1;
-  animation: cue 3.4s var(--ease-ink) 2.4s infinite;
-  stroke-dashoffset: 1;
-}
-
-@keyframes cue {
-  0% {
-    stroke-dashoffset: 1;
+@media (min-width: 720px) {
+  .scene {
+    --scene-w: min(92vw, 860px);
   }
-  55%,
-  75% {
-    stroke-dashoffset: 0;
+  .scene--saptapadi {
+    --scene-w: min(96vw, 940px);
+  }
+}
+
+.stage--scene {
+  --cw: 996;
+  --ch: 735;
+}
+
+.stage--scene .arch {
+  z-index: 1;
+}
+
+.scene__fig {
+  z-index: 3;
+}
+
+.scene figcaption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  margin-top: 0.4rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 1s ease-out 2.6s,
+    transform 1.2s var(--ease-float) 2.6s;
+}
+
+.scene.is-in figcaption {
+  opacity: 1;
+  transform: none;
+}
+
+/* the sacred fire: a warm glow, and flames that flicker */
+.glow {
+  position: absolute;
+  z-index: 2;
+  left: calc(418 / 996 * 100%);
+  top: calc(470 / 735 * 100%);
+  width: calc(204 / 996 * 100%);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 186, 40, 0.6), rgba(255, 120, 30, 0.2) 45%, transparent 70%);
+  opacity: 0;
+}
+
+.scene.is-in .glow {
+  animation: glow 2.4s ease-in-out 3s infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    opacity: 0.5;
+    scale: 0.9;
+  }
+  to {
+    opacity: 1;
+    scale: 1.12;
+  }
+}
+
+.flame {
+  z-index: 4;
+  transform-origin: 50% 100%;
+  opacity: 0;
+}
+
+.scene.is-in .flame {
+  animation:
+    appear 0.6s ease 3.2s both,
+    flicker 1.2s ease-in-out 3.8s infinite alternate;
+}
+
+@keyframes appear {
+  to {
     opacity: 1;
   }
+}
+
+@keyframes flicker {
+  0% {
+    scale: 1 1;
+  }
+  35% {
+    scale: 1.03 1.1;
+  }
+  70% {
+    scale: 1.01 1.04;
+  }
   100% {
-    stroke-dashoffset: 0;
-    opacity: 0;
+    scale: 1.04 1.13;
   }
 }
 
@@ -701,13 +900,9 @@ h2 {
    INVITATION
    ============================================================ */
 
-.invitation {
-  padding-top: 1rem;
-}
-
 .hosts {
   font-size: 1.08rem;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 .hosts .nowrap {
@@ -716,13 +911,13 @@ h2 {
 
 .hosts em {
   font-size: 0.92em;
-  color: var(--ink-soft);
+  color: var(--text-soft);
 }
 
 .invite-line {
   margin-top: 1.1rem;
   font-style: italic;
-  color: var(--ink-soft);
+  color: var(--text-soft);
 }
 
 .person {
@@ -731,46 +926,46 @@ h2 {
 
 .person__name {
   font-family: var(--display);
-  font-size: clamp(2rem, 7.6vw, 2.9rem);
-  font-weight: 600;
-  line-height: 1.1;
-  color: var(--maroon);
+  font-weight: 400;
+  font-size: clamp(2rem, 7.6vw, 2.8rem);
+  line-height: 1.12;
+  color: var(--vermilion-deep);
 }
 
 .person__parents {
   margin-top: 0.45rem;
   font-size: 1rem;
-  color: var(--ink-soft);
+  color: var(--text-soft);
 }
 
 .with {
-  position: relative;
-  width: min(100%, 300px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
   margin: 2rem auto 0;
 }
 
+.with__motif {
+  width: min(28vw, 118px);
+}
+
 .with__word {
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  transform: translateX(-50%);
-  font-family: var(--display);
   font-style: italic;
-  font-size: 1.35rem;
-  color: var(--gold-text);
+  font-size: 1.4rem;
+  color: var(--blue);
 }
 
 .with + .person {
-  margin-top: 3.2rem;
+  margin-top: 1.4rem;
 }
 
 /* ============================================================
    WEDDING DETAILS
    ============================================================ */
 
-.details__thoranam {
-  width: min(100%, 400px);
-  margin: 0 auto 2.6rem;
+.details {
+  padding-top: 2rem;
 }
 
 .date-row {
@@ -778,19 +973,19 @@ h2 {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 1rem;
-  margin-top: 2rem;
+  margin-top: 1.6rem;
 }
 
 .date-row__side {
   padding: 0.85rem 0;
-  border-block: 1px solid var(--gold);
+  border-block: 3px double var(--vermilion);
   font-size: 0.9rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
 .date-row__time {
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: none;
   font-size: 1rem;
 }
@@ -806,152 +1001,168 @@ h2 {
 .date-row__year {
   font-size: 0.75rem;
   letter-spacing: 0.34em;
-  text-transform: uppercase;
-  color: var(--gold-text);
   padding-left: 0.34em;
+  text-transform: uppercase;
+  color: var(--blue);
 }
 
 .date-row__day {
-  margin: 0.3rem 0 0.4rem;
-  font-variant-numeric: lining-nums;
+  margin: 0.35rem 0 0.3rem;
   font-family: var(--display);
-  font-size: 4rem;
-  font-weight: 600;
-  color: var(--kumkum);
+  font-size: 4.2rem;
+  color: var(--vermilion);
 }
 
-/* the muhurtham sits in a small gold-edged medallion */
+/* the muhurtham in a painted cartouche, diamonds at either end */
 .muhurtham {
   position: relative;
+  max-width: 20rem;
   margin: 3rem auto 0;
-  padding: 1.7rem 1rem 1.6rem;
-  max-width: 19rem;
-  border-radius: 999px;
-  background:
-    radial-gradient(ellipse at center, rgba(234, 168, 42, 0.22), rgba(234, 168, 42, 0.06) 70%),
-    var(--ivory);
-  box-shadow:
-    0 0 0 1.5px var(--gold),
-    0 0 0 6px var(--ivory),
-    0 0 0 7px rgba(201, 151, 58, 0.5);
+  padding: 1.5rem 2.6rem 1.4rem;
+  border: 3px solid var(--vermilion);
+  border-radius: 8px;
+  background: var(--lemon);
+  box-shadow: inset 0 0 0 5px var(--lemon), inset 0 0 0 6.5px var(--vermilion);
+}
+
+.muhurtham::before,
+.muhurtham::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  margin-top: -11px;
+  background: var(--vermilion);
+  border: 3px solid var(--lemon);
+  box-shadow: 0 0 0 2px var(--vermilion);
+  transform: rotate(45deg);
+}
+
+.muhurtham::before {
+  left: -14px;
+}
+
+.muhurtham::after {
+  right: -14px;
+}
+
+.muhurtham .eyebrow {
+  color: var(--vermilion-deep);
 }
 
 .muhurtham__time {
-  margin-top: 0.4rem;
-  font-variant-numeric: lining-nums;
+  margin-top: 0.35rem;
   font-family: var(--display);
   font-size: clamp(2.4rem, 9vw, 3rem);
-  font-weight: 600;
   line-height: 1;
-  color: var(--kumkum);
+  color: var(--vermilion-deep);
 }
 
 .muhurtham__after {
-  margin-top: 0.55rem;
+  margin-top: 0.5rem;
   font-style: italic;
-  color: var(--ink-soft);
+  color: var(--text);
 }
 
 .venue {
-  position: relative;
   margin-top: 3.2rem;
-  padding: 0 3.5rem;
 }
 
 .venue__name {
-  margin-top: 0.6rem;
+  margin-top: 0.5rem;
   font-family: var(--display);
-  font-size: clamp(1.7rem, 6.2vw, 2.2rem);
-  font-weight: 600;
+  font-size: clamp(1.7rem, 6.4vw, 2.3rem);
   line-height: 1.15;
-  color: var(--maroon);
+  color: var(--vermilion-deep);
 }
 
 .venue__city {
   font-style: italic;
-  color: var(--ink-soft);
+  color: var(--text-soft);
 }
 
-.venue__sprig {
-  position: absolute;
-  top: 0.4rem;
-  width: 46px;
-}
-
-.venue__sprig--l {
-  left: 0;
-}
-
-.venue__sprig--r {
-  right: 0;
+.venue .btn {
+  margin-top: 1.5rem;
 }
 
 /* ============================================================
-   COUNTDOWN — a maroon band across the card
+   COUNTDOWN — on the band's red, between two painted borders
    ============================================================ */
 
-.band {
-  max-width: none;
-  margin: 1rem 0;
-  padding-block: 3rem;
-  color: var(--ivory);
-  background-color: var(--maroon);
-  background-image: var(--motif);
-  box-shadow:
-    inset 0 1px 0 var(--gold),
-    inset 0 -1px 0 var(--gold),
-    inset 0 5px 0 var(--maroon),
-    inset 0 6px 0 rgba(236, 201, 120, 0.55),
-    inset 0 -5px 0 var(--maroon),
-    inset 0 -6px 0 rgba(236, 201, 120, 0.55);
+.mangalyam {
+  padding-bottom: 1rem;
 }
 
-.band .eyebrow {
-  color: var(--gold-light);
+.countdown {
+  background: var(--vermilion);
+  text-align: center;
+}
+
+.countdown__inner {
+  padding: 2.6rem 1rem 2.8rem;
+}
+
+.countdown .eyebrow {
+  color: var(--lemon);
 }
 
 .countdown__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  max-width: 28rem;
-  margin: 1.6rem auto 0;
+  max-width: 30rem;
+  margin: 1.4rem auto 0;
 }
 
 .unit {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.2rem 0;
+  overflow: hidden;
 }
 
 .unit + .unit {
-  border-left: 1px solid rgba(236, 201, 120, 0.4);
+  border-left: 2px solid rgba(254, 252, 85, 0.45);
 }
 
 .unit__num {
+  display: block;
   font-family: var(--display);
-  font-size: clamp(2.2rem, 9vw, 3.3rem);
-  font-weight: 600;
-  line-height: 1.1;
-  font-variant-numeric: lining-nums tabular-nums;
-  color: var(--gold-light);
+  font-size: clamp(2.2rem, 9vw, 3.4rem);
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+  color: var(--lemon);
+}
+
+.unit__num.roll {
+  animation: roll 0.45s var(--ease-float);
+}
+
+@keyframes roll {
+  from {
+    transform: translateY(-45%);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
 }
 
 .unit__label {
-  margin-top: 0.3rem;
+  margin-top: 0.2rem;
   font-size: 0.68rem;
-  letter-spacing: 0.26em;
+  letter-spacing: 0.24em;
+  padding-left: 0.24em;
   text-transform: uppercase;
-  color: rgba(251, 243, 225, 0.85);
-  padding-left: 0.26em;
+  color: #fff;
 }
 
 .countdown__done {
-  margin-top: 1.4rem;
+  margin-top: 1.2rem;
   font-family: var(--display);
-  font-style: italic;
-  font-size: 1.5rem;
-  color: var(--gold-light);
+  font-size: 1.6rem;
+  color: var(--lemon);
 }
 
 /* ============================================================
@@ -959,19 +1170,19 @@ h2 {
    ============================================================ */
 
 .save__title {
-  margin-top: 0.8rem;
+  margin-top: 0.6rem;
   font-family: var(--display);
-  font-style: italic;
-  font-weight: 500;
+  font-weight: 400;
   font-size: clamp(1.9rem, 7vw, 2.5rem);
-  color: var(--maroon);
+  line-height: 1.15;
+  color: var(--vermilion-deep);
 }
 
 .save__actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.8rem;
+  gap: 1rem;
   margin-top: 1.8rem;
 }
 
@@ -983,21 +1194,19 @@ h2 {
   margin-top: 1.2rem;
   font-size: 0.95rem;
   font-style: italic;
-  color: var(--ink-soft);
+  color: var(--text-soft);
 }
 
 /* ============================================================
-   CLOSING
+   CLOSING — saptapadi, banana plants either side, the band
    ============================================================ */
 
 .closing {
-  padding-top: 1.5rem;
-  padding-bottom: 6.5rem;
+  position: relative;
 }
 
-.closing__art {
-  width: 96px;
-  margin: 0 auto;
+.closing .section {
+  padding-bottom: 3.5rem;
 }
 
 .closing__blessing {
@@ -1005,32 +1214,44 @@ h2 {
 }
 
 .closing__line {
-  margin-top: 0.8rem;
+  margin-top: 0.7rem;
   font-style: italic;
-  color: var(--ink-soft);
+  color: var(--text-soft);
 }
 
 .closing__names {
-  margin-top: 1.4rem;
+  margin-top: 1rem;
   font-family: var(--display);
-  font-style: italic;
-  font-weight: 600;
-  font-size: 1.6rem;
-  color: var(--maroon);
+  font-size: 1.8rem;
+  color: var(--vermilion-deep);
 }
 
-.closing__lotus {
+.closing__plants img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.closing__plants .banana {
   position: absolute;
-  bottom: 0.8rem;
-  width: 74px;
+  bottom: 0;
+  width: clamp(62px, 15vw, 130px);
 }
 
-.closing__lotus--l {
-  left: 0.9rem;
+.closing__plants .banana:first-child {
+  left: 0;
 }
 
-.closing__lotus--r {
-  right: 0.9rem;
+.closing__plants .banana--r {
+  right: 0;
+}
+
+.credit {
+  padding: 0.9rem 1rem 1.4rem;
+  font-size: 0.85rem;
+  font-style: italic;
+  text-align: center;
+  color: var(--text-soft);
 }
 
 /* ============================================================
@@ -1044,17 +1265,17 @@ h2 {
   z-index: 40;
   display: grid;
   place-items: center;
-  width: 2.9rem;
-  height: 2.9rem;
+  width: 3rem;
+  height: 3rem;
   padding: 0;
-  border: 1px solid var(--gold);
+  border: 2px solid var(--lemon);
   border-radius: 50%;
-  background: var(--maroon);
-  color: var(--gold-light);
+  background: var(--vermilion);
+  box-shadow: 0 0 0 2px var(--vermilion), 0 8px 18px -8px rgba(120, 20, 0, 0.6);
+  color: var(--lemon);
   cursor: pointer;
   opacity: 0;
   pointer-events: none;
-  box-shadow: 0 8px 20px -8px rgba(20, 0, 0, 0.6);
   transition: opacity 1s ease 1.5s;
 }
 
@@ -1068,7 +1289,7 @@ h2 {
   height: 1.2rem;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.4;
+  stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -1078,37 +1299,6 @@ h2 {
 }
 
 /* ---------- small screens ---------- */
-
-@media (max-width: 480px) {
-  .card {
-    margin: 5.2rem 10px 1.5rem;
-    border-radius: 50% 50% 14px 14px / 7.5rem 7.5rem 14px 14px;
-  }
-  .card::before {
-    inset: 7px;
-    border-radius: 50% 50% 9px 9px / 7rem 7rem 9px 9px;
-  }
-  .card::after {
-    inset: 11px;
-    border-radius: 50% 50% 6px 6px / 6.7rem 6.7rem 6px 6px;
-  }
-  .card__kalasham {
-    top: -56px;
-    width: 88px;
-  }
-  .card__band {
-    margin: 0 7px 7px;
-  }
-  .hero {
-    padding-top: 3.5rem;
-  }
-  .section {
-    padding-inline: 1.35rem;
-  }
-  .band {
-    padding-inline: 0.75rem;
-  }
-}
 
 @media (max-width: 420px) {
   .date-row {
@@ -1122,25 +1312,16 @@ h2 {
     font-size: 0.9rem;
     letter-spacing: 0.02em;
   }
-  .venue {
-    padding: 0 2.6rem;
-  }
-  .venue__sprig {
-    width: 36px;
-  }
   .hosts {
     font-size: 1rem;
   }
   .unit__label {
-    letter-spacing: 0.16em;
-    padding-left: 0.16em;
-  }
-  .closing__lotus {
-    width: 58px;
+    letter-spacing: 0.14em;
+    padding-left: 0.14em;
   }
 }
 
-/* ---------- reduced motion: finished drawings, no movement ---------- */
+/* ---------- reduced motion: finished paintings, no movement ---------- */
 
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -1155,8 +1336,9 @@ h2 {
     transition-duration: 0.01ms !important;
     transition-delay: 0s !important;
   }
-  .scroll-cue path {
-    animation: none !important;
-    stroke-dashoffset: 0;
+  .js .paint__ink,
+  .js .paint__colour {
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 }

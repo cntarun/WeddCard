@@ -64,6 +64,9 @@ export const config = {
     artist: "",
   },
 
+  // Shown at the foot of the page, beneath the last painting.
+  artCredit: "Paintings by Bapu",
+
   closing: {
     blessing: "శుభమస్తు",
     line: "Your presence and blessings would mean the world to us.",
