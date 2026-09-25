@@ -91,8 +91,7 @@ main {
   overflow-x: clip;
 }
 
-main:focus,
-.hero__names:focus {
+main:focus {
   outline: none;
 }
 
@@ -488,7 +487,7 @@ img {
 
 .hero {
   position: relative;
-  padding-bottom: 2.5rem;
+  padding-bottom: 1.25rem;
 }
 
 .stage--hero {
@@ -683,32 +682,26 @@ img {
 /* hero text: the intro swaps for the names */
 .hero__text {
   display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.9s var(--ease-float) 0.45s;
   max-width: 40rem;
   margin: 0.5rem auto 0;
   padding: 0 1.25rem;
   text-align: center;
 }
 
-.hero__intro,
-.hero__names {
-  grid-area: 1 / 1;
+.is-open .hero__text {
+  grid-template-rows: 0fr;
 }
 
 .hero__intro {
   position: relative;
   z-index: 1;
+  min-height: 0;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-/* the names wait, invisible, beneath the intro — never in its way */
-.hero__names {
-  pointer-events: none;
-}
-
-.is-open .hero__names {
-  pointer-events: auto;
 }
 
 [data-rise] {
@@ -755,20 +748,8 @@ img {
   margin-top: 2.4rem;
 }
 
-.hero__names h1 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 1.6rem 0 0;
-}
-
-.hero__names .joiner {
-  margin: 0.35rem 0 0.45rem;
-}
-
-.hero__date {
-  margin-top: 1.8rem;
-  color: var(--text-soft);
+#hero-title:focus {
+  outline: none;
 }
 
 /* ============================================================
@@ -833,6 +814,7 @@ img {
   translate: -50% 0;
 }
 
+.scene--blessing { --scene-w: 100vw; margin-bottom: 0.4rem; }
 .scene--jeelakarra { --scene-w: 106vw; }
 .scene--mangalyam { --scene-w: 124vw; }
 .scene--saptapadi { --scene-w: 150vw; }
@@ -840,6 +822,9 @@ img {
 @media (min-width: 720px) {
   .scene {
     --scene-w: min(92vw, 860px);
+  }
+  .scene--blessing {
+    --scene-w: min(92vw, 600px);
   }
   .scene--saptapadi {
     --scene-w: min(96vw, 940px);
@@ -849,6 +834,33 @@ img {
 .stage--scene {
   --cw: 996;
   --ch: 735;
+}
+
+.stage--blessing {
+  --cw: 996;
+  --ch: 470;
+}
+
+/* the three blessing words: the centre word sits exactly beneath Ganesha
+   (the arch and the row share one centre line), and the outer words sit an
+   equal gap either side of it, whatever their widths */
+.blessing-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  column-gap: clamp(1.4rem, 7vw, 2.6rem);
+  margin: 0 auto 3.4rem;
+}
+
+.blessing-row span {
+  white-space: nowrap;
+}
+
+.blessing-row span:first-child {
+  justify-self: end;
+}
+
+.blessing-row span:last-child {
+  justify-self: start;
 }
 
 .stage--scene .arch {
@@ -976,7 +988,7 @@ img {
   align-items: center;
   justify-content: center;
   gap: 0.9rem;
-  margin: 3rem auto 0;
+  margin: 1.6rem auto 0;
 }
 
 .with__motif {
@@ -984,7 +996,11 @@ img {
 }
 
 .with + .person {
-  margin-top: 2.2rem;
+  margin-top: 1.1rem;
+}
+
+.with__word {
+  font-size: calc(var(--fs-heading) * 0.8);
 }
 
 /* ============================================================
@@ -1004,9 +1020,8 @@ img {
 }
 
 .date-row__side {
-  padding: 0.95rem 0;
+  height: 3.4rem;
   border-block: 3px double var(--vermilion);
-  color: var(--text);
 }
 
 .date-row__center {
@@ -1016,8 +1031,8 @@ img {
   line-height: 1;
 }
 
-.date-row__month,
-.date-row__year {
+.date-row__weekday,
+.date-row__month {
   padding-left: var(--track-caps);
 }
 
@@ -1100,8 +1115,12 @@ img {
    COUNTDOWN — on the band's red, between two painted borders
    ============================================================ */
 
-.mangalyam {
+.rituals {
   padding-bottom: 1rem;
+}
+
+.scene--saptapadi {
+  margin-top: 3rem;
 }
 
 .countdown {
@@ -1202,7 +1221,7 @@ img {
 }
 
 .closing .section {
-  padding-top: 1rem;
+  padding-top: 1.5rem;
   padding-bottom: 3.5rem;
 }
 
@@ -1212,10 +1231,6 @@ img {
 
 .closing__line {
   margin-top: 1rem;
-}
-
-.closing__names {
-  margin-top: 1.8rem;
 }
 
 .closing__plants img {
@@ -1241,6 +1256,7 @@ img {
 .credit {
   /* room beneath for the floating music button */
   padding: 1.2rem 1rem 5.5rem;
+  font-size: calc(var(--fs-caption) * 0.88);
   text-align: center;
   color: var(--text-soft);
 }
@@ -1300,9 +1316,6 @@ img {
 @media (max-width: 420px) {
   .date-row {
     gap: 0.6rem;
-  }
-  .date-row__side {
-    letter-spacing: 0.2em;
   }
   .unit__label {
     letter-spacing: 0.16em;

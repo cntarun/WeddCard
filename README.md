@@ -10,17 +10,20 @@ layers so every piece can move on its own.
   and dances, with the dhol keeping the beat and the offerings beside him.
 - **Hero** — on *Open the invitation*, Ganesha rises away and the couple
   exchanging garlands is sketched and painted into the same frame, then
-  showered with akshintalu (turmeric rice and petals).
-- **Invitation** — the card's wording, with the blue kolam motifs blooming
-  around "with".
+  showered with akshintalu (turmeric rice and petals). A purely visual
+  moment: no text, ending on the painted border band.
+- **Invitation** — a small Ganesha beneath an arch, the blessing
+  శ్రీరస్తు · శుభమస్తు · అవిఘ్నమస్తు spread beneath him (the centre word exactly
+  under Ganesha), then the card's wording, with the blue kolam motifs
+  blooming around "with".
 - **The Wedding** — beneath the jeelakarra-bellam painting: Sunday ·
-  13 December 2026 · 4:00 PM onwards, **Muhurtham 7:25 PM, dinner follows**,
-  venue and map link.
-- **Countdown** — beneath the mangalya-dharana painting, on the band's red,
-  digits rolling as they change.
+  13 December 2026, **Sumuhurtham 7:25 PM, dinner follows**, venue and map.
+- **Rituals** — mangalya dharana, then saptapadi around a glowing,
+  flickering sacred fire, in the ceremony's order.
+- **Countdown** — on the band's red, digits rolling as they change.
 - **Add to calendar** (Apple / Outlook `.ics` + Google Calendar).
-- **Closing** — saptapadi around a glowing, flickering sacred fire, banana
-  plants either side, and the credit *Paintings by Bapu*.
+- **Closing** — శుభమస్తు, banana plants either side, the band, and the credit
+  *Paintings by Bapu*.
 - **Music** — "Vachindamma" starts softly when the invitation is opened,
   with a play/pause button.
 

@@ -93,22 +93,27 @@ const hero = `
         <p class="hero__short display" id="intro-title" data-rise style="--i:2">${esc(groom.firstName)} <span class="joiner">&amp;</span> ${esc(bride.firstName)}</p>
         <button type="button" class="btn" id="open-invite" data-rise style="--i:3">Open the invitation</button>
       </div>
-      <div class="hero__names" id="hero-names" tabindex="-1">
-        <p class="telugu" lang="te" data-reveal>${esc(config.blessing)}</p>
-        <h1>
-          <span class="name display" data-reveal style="--i:1">${esc(groom.name)}</span>
-          <span class="amp joiner" data-reveal style="--i:2" aria-label="and">&amp;</span>
-          <span class="name display" data-reveal style="--i:3">${esc(bride.name)}</span>
-        </h1>
-        <p class="hero__date caption" data-reveal style="--i:4">${esc(w.dateLong)} <span aria-hidden="true">·</span> ${esc(venue.city)}</p>
-      </div>
     </div>
+    <h1 class="visually-hidden" id="hero-title" tabindex="-1">The wedding of ${esc(groom.name)} &amp; ${esc(bride.name)}</h1>
   </header>`;
 
 const rule = `<div class="rule" data-draw aria-hidden="true"></div>`;
 
 const invitation = `
   <section class="section invitation" id="invitation" aria-label="Invitation">
+    <figure class="scene scene--blessing" data-scene aria-hidden="true">
+      <div class="stage stage--blessing">
+        ${layer("arch", "arch", [11, 8, 975])}
+        ${painted("scene__fig", "ganesha", [328, 96, 340], "")}
+      </div>
+    </figure>
+    <p class="telugu blessing-row" lang="te" data-reveal>
+      ${config.blessing
+        .split(" · ")
+        .map((word) => `<span>${esc(word)}</span>`)
+        .join("")}
+    </p>
+
     <p class="invite-lead lead" data-reveal>${esc(config.blessingLine)},</p>
     <div class="hosts" data-reveal style="--i:1">
       ${config.hosts.map((h) => `<p>${hostLine(h)}</p>`).join("")}
@@ -154,18 +159,18 @@ const details = `
     <h2 class="visually-hidden" id="details-title">Wedding details</h2>
 
     <div class="date-row" data-reveal style="--i:1">
-      <p class="date-row__side caption">${esc(w.dayName)}</p>
+      <span class="date-row__side" aria-hidden="true"></span>
       <p class="date-row__center">
-        <span class="date-row__month caption">${esc(w.month)}</span>
+        <span class="date-row__weekday caption">${esc(w.dayName)}</span>
         <span class="date-row__day display">${esc(w.day)}</span>
-        <span class="date-row__year caption">${esc(w.year)}</span>
+        <span class="date-row__month caption">${esc(w.month)} ${esc(w.year)}</span>
       </p>
-      <p class="date-row__side date-row__time caption">${esc(w.startsAt)}</p>
+      <span class="date-row__side" aria-hidden="true"></span>
     </div>
 
     <div class="muhurtham" data-reveal style="--i:2">
-      <p class="telugu" lang="te">ముహూర్తం</p>
-      <p class="eyebrow">Muhurtham</p>
+      <p class="telugu" lang="te">సుముహూర్తం</p>
+      <p class="eyebrow">Sumuhurtham</p>
       <p class="muhurtham__time heading">${esc(w.muhurtham)}</p>
       <p class="muhurtham__after lead">${esc(w.afterMuhurtham)}</p>
     </div>
@@ -181,8 +186,15 @@ const details = `
   </section>`;
 
 const countdown = `
-  <section class="section mangalyam" aria-label="Mangalya Dharana">
+  <section class="section rituals" aria-label="Mangalya Dharana and Saptapadi">
     ${scene("mangalyam", [143, 189, 717], "The groom tying the mangalsutra as the bride bows her head, a relative holding her braid, in Bapu's painting", { te: "మాంగల్య ధారణ", en: "Mangalya Dharana" })}
+    ${scene(
+      "saptapadi",
+      [235, 177, 538],
+      "The bride and groom walking around the sacred fire, their garments tied together, in Bapu's painting",
+      { te: "సప్తపది", en: "Saptapadi" },
+      `<div class="glow" aria-hidden="true"></div>`
+    )}
   </section>
   <section class="countdown" id="countdown" aria-labelledby="countdown-title">
     <div class="rule rule--edge" data-draw aria-hidden="true"></div>
@@ -214,16 +226,8 @@ const calendar = `
 const closing = `
   <footer class="closing">
     <div class="section">
-      ${scene(
-        "saptapadi",
-        [235, 177, 538],
-        "The bride and groom walking around the sacred fire, their garments tied together, in Bapu's painting",
-        { te: "సప్తపది", en: "Saptapadi" },
-        `<div class="glow" aria-hidden="true"></div>`
-      )}
       <p class="telugu closing__blessing" lang="te" data-reveal>${esc(config.closing.blessing)}</p>
       <p class="closing__line lead" data-reveal style="--i:1">${esc(config.closing.line)}</p>
-      <p class="closing__names heading" data-reveal style="--i:2">${esc(groom.firstName)} &amp; ${esc(bride.firstName)}</p>
       <div class="closing__plants" aria-hidden="true">
         <div class="banana" data-draw><div class="sway">${img("banana-l", "", false)}</div></div>
         <div class="banana banana--r" data-draw><div class="sway">${img("banana-r", "", false)}</div></div>
@@ -305,13 +309,9 @@ function openInvitation() {
   couple.style.setProperty("--fall", `${Math.round(couple.clientHeight * 1.05)}px`);
   decoded(couple.querySelectorAll("img")).then(() => couple.classList.add("is-in"));
   startMusic();
-  setTimeout(
-    () => document.querySelectorAll(".hero__names [data-reveal]").forEach((el) => el.classList.add("is-in")),
-    reduceMotion ? 0 : 1300
-  );
   // The shower is a one-off; tidy it away once it has fallen.
   setTimeout(() => document.querySelector(".shower")?.remove(), 10000);
-  document.getElementById("hero-names").focus({ preventScroll: true });
+  document.getElementById("hero-title").focus({ preventScroll: true });
 }
 openBtn.addEventListener("click", openInvitation, { once: true });
 
