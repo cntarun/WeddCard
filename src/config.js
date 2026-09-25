@@ -43,12 +43,15 @@ export const config = {
     day: "13",
     year: "2026",
     dateLong: "Sunday, 13 December 2026",
-    startsAt: "4:00 PM onwards",
+    // Sumuhurtham: the exact auspicious moment of the wedding vows.
+    muhurthamLabel: "Sumuhurtham",
+    muhurthamTelugu: "సుముహూర్తం",
     muhurtham: "7:25 PM",
     afterMuhurtham: "Dinner follows",
     // Times are India Standard Time (+05:30).
-    startISO: "2026-12-13T16:00:00+05:30",
-    muhurthamISO: "2026-12-13T19:25:00+05:30", // the countdown counts to this
+    // The calendar event starts at the Sumuhurtham; the countdown counts to it.
+    startISO: "2026-12-13T19:25:00+05:30",
+    muhurthamISO: "2026-12-13T19:25:00+05:30",
     endISO: "2026-12-13T23:00:00+05:30",
   },
 

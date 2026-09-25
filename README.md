@@ -18,10 +18,16 @@ layers so every piece can move on its own.
   blooming around "with".
 - **The Wedding** — beneath the jeelakarra-bellam painting: Sunday ·
   13 December 2026, **Sumuhurtham 7:25 PM, dinner follows**, venue and map.
-- **Rituals** — mangalya dharana, then saptapadi around a glowing,
-  flickering sacred fire, in the ceremony's order.
-- **Countdown** — on the band's red, digits rolling as they change.
-- **Add to calendar** (Apple / Outlook `.ics` + Google Calendar).
+- **Rituals** — mangalya dharana beneath its arch, then saptapadi flowing
+  straight on beneath it (no second arch) around a glowing, flickering
+  sacred fire, in the ceremony's order.
+- **Countdown** — to the Sumuhurtham, on the band's red, digits rolling as
+  they change.
+- **Add to calendar** — Apple / Outlook `.ics`, and Google Calendar. The
+  Google button opens `add-to-google.html` on this site, which forwards to
+  Google's pre-filled event form a moment later. Phones hand a direct tap on
+  a calendar.google.com link to the Google Calendar app, which opens without
+  the event; a forward by script stays in the browser.
 - **Closing** — శుభమస్తు, banana plants either side, the band, and the credit
   *Paintings by Bapu*.
 - **Music** — "Vachindamma" starts softly when the invitation is opened,
@@ -47,8 +53,8 @@ it. Search for `[TODO]` to see what's still open:
 2. **Music** — to change the song, replace the MP3 in `public/audio/` and
    update `music.src` / `title` / `artist`.
 
-The calendar entry runs 4:00 PM – 11:00 PM IST; change `wedding.endISO` if
-the evening ends at a different time.
+The calendar entry starts at the Sumuhurtham, 7:25 PM, and runs to 11:00 PM
+IST; change `wedding.endISO` if the evening ends at a different time.
 
 ## Where things live
 
@@ -57,7 +63,7 @@ src/
 ├── config.js     ← all content
 ├── main.js       ← page, reveal-on-scroll, countdown, music
 ├── fonts.css     ← @font-face for the self-hosted fonts
-├── calendar.js   ← .ics file + Google Calendar link
+├── calendar.js   ← .ics file + Google Calendar hand-off page
 └── style.css     ← palette, type, animation
 public/
 ├── art/          ← the painting layers (colour + ink), thoranam and band tiles
@@ -84,7 +90,7 @@ Traditional meets modern, with type doing the bridging:
 
 Every size is one of four steps, set as tokens at the top of `style.css`:
 `--fs-display` (names, the date, countdown), `--fs-heading` (section titles,
-venue, Muhurtham time), `--fs-body`, `--fs-caption` (uppercase, tracked
+venue, Sumuhurtham time), `--fs-body`, `--fs-caption` (uppercase, tracked
 `0.32em`). Telugu uses the heading step with an optical factor
 (`--te-optical`). Use the classes `.display`, `.heading`, `.caption`, `.lead`,
 `.joiner` and `.telugu` rather than setting font sizes directly.

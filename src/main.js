@@ -1,7 +1,6 @@
 import "./fonts.css";
 import "./style.css";
 import { config } from "./config.js";
-import { googleCalendarUrl } from "./calendar.js";
 
 const { groom, bride, wedding: w, venue, music } = config;
 
@@ -29,8 +28,20 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").match
 
 const pos = (p) => (p ? `--x:${p[0]};--y:${p[1]};--w:${p[2]};` : "");
 
+// Each layer's pixel size (the ink and colour images match), so the page
+// reserves its space before it loads; a lazy image with no height yet may
+// never be fetched on wide screens.
+const SIZES = {
+  arch: [975, 295], "banana-l": [203, 493], "banana-r": [208, 487],
+  "couple-garland": [379, 556], dhol: [360, 258], ganesha: [417, 440],
+  jeelakarra: [843, 502], mangalyam: [717, 524], "motif-l": [211, 148],
+  "motif-r": [218, 148], offerings: [357, 262], "saptapadi-flame": [159, 82],
+  saptapadi: [538, 540],
+};
+const dims = (name) => (SIZES[name] ? `width="${SIZES[name][0]}" height="${SIZES[name][1]}"` : "");
+
 const img = (name, alt, eager) =>
-  `<img src="art/${name}.webp" alt="${esc(alt)}" ${eager ? "" : 'loading="lazy"'} decoding="async" draggable="false">`;
+  `<img src="art/${name}.webp" alt="${esc(alt)}" ${dims(name)} ${eager ? "" : 'loading="lazy"'} decoding="async" draggable="false">`;
 
 // A plain layer: frame pieces (arch, motifs, flame).
 const layer = (cls, name, p, { eager = false, alt = "" } = {}) =>
@@ -39,8 +50,8 @@ const layer = (cls, name, p, { eager = false, alt = "" } = {}) =>
 // A figure layer: ink sketch underneath, colour laid over it.
 const painted = (cls, name, p, alt, { eager = false, delay = 0 } = {}) =>
   `<div class="${p ? "layer " : ""}paint ${cls}" style="${pos(p)}--delay:${delay}s">` +
-  `<img class="paint__ink" src="art/${name}-ink.webp" alt="" aria-hidden="true" ${eager ? "" : 'loading="lazy"'} decoding="async" draggable="false">` +
-  `<img class="paint__colour" src="art/${name}.webp" alt="${esc(alt)}" ${eager ? "" : 'loading="lazy"'} decoding="async" draggable="false">` +
+  `<img class="paint__ink" src="art/${name}-ink.webp" alt="" aria-hidden="true" ${dims(name)} ${eager ? "" : 'loading="lazy"'} decoding="async" draggable="false">` +
+  `<img class="paint__colour" src="art/${name}.webp" alt="${esc(alt)}" ${dims(name)} ${eager ? "" : 'loading="lazy"'} decoding="async" draggable="false">` +
   `</div>`;
 
 /* ---------- akshintalu: turmeric rice & petals, showered once ---------- */
@@ -104,7 +115,7 @@ const invitation = `
     <figure class="scene scene--blessing" data-scene aria-hidden="true">
       <div class="stage stage--blessing">
         ${layer("arch", "arch", [11, 8, 975])}
-        ${painted("scene__fig", "ganesha", [328, 96, 340], "")}
+        ${painted("scene__fig", "ganesha", [378, 100, 240], "")}
       </div>
     </figure>
     <p class="telugu blessing-row" lang="te" data-reveal>
@@ -126,9 +137,9 @@ const invitation = `
     </div>
 
     <div class="with" data-draw>
-      <img class="with__motif" src="art/motif-l.webp" alt="" loading="lazy">
+      <img class="with__motif" src="art/motif-l.webp" alt="" width="211" height="148" loading="lazy">
       <span class="with__word joiner">with</span>
-      <img class="with__motif with__motif--r" src="art/motif-r.webp" alt="" loading="lazy">
+      <img class="with__motif with__motif--r" src="art/motif-r.webp" alt="" width="218" height="148" loading="lazy">
     </div>
 
     <div class="person" data-reveal>
@@ -138,10 +149,10 @@ const invitation = `
   </section>`;
 
 // A painted scene beneath its own arch, as in the originals.
-const scene = (id, p, alt, caption, extra = "") => `
+const scene = (id, p, alt, caption, extra = "", { arch = true } = {}) => `
   <figure class="scene scene--${id}" data-scene>
-    <div class="stage stage--scene">
-      ${layer("arch", "arch", [11, 8, 975])}
+    <div class="stage stage--scene${arch ? "" : " stage--bare"}">
+      ${arch ? layer("arch", "arch", [11, 8, 975]) : ""}
       ${extra}
       ${painted("scene__fig", id, p, alt)}
     </div>
@@ -153,7 +164,7 @@ const scene = (id, p, alt, caption, extra = "") => `
 
 const details = `
   <section class="section details" id="details" aria-labelledby="details-title">
-    ${scene("jeelakarra", [75, 222, 843], "The bride and groom placing jeelakarra-bellam on each other's heads at the muhurtham, in Bapu's painting", { te: "జీలకర్ర బెల్లం", en: "Jeelakarra Bellam" })}
+    ${scene("jeelakarra", [75, 222, 843], "The bride and groom placing jeelakarra-bellam on each other's heads at the Sumuhurtham, in Bapu's painting", { te: "జీలకర్ర బెల్లం", en: "Jeelakarra Bellam" })}
 
     <p class="eyebrow" data-reveal>The Wedding</p>
     <h2 class="visually-hidden" id="details-title">Wedding details</h2>
@@ -169,8 +180,8 @@ const details = `
     </div>
 
     <div class="muhurtham" data-reveal style="--i:2">
-      <p class="telugu" lang="te">సుముహూర్తం</p>
-      <p class="eyebrow">Sumuhurtham</p>
+      <p class="telugu" lang="te">${esc(w.muhurthamTelugu)}</p>
+      <p class="eyebrow">${esc(w.muhurthamLabel)}</p>
       <p class="muhurtham__time heading">${esc(w.muhurtham)}</p>
       <p class="muhurtham__after lead">${esc(w.afterMuhurtham)}</p>
     </div>
@@ -190,16 +201,17 @@ const countdown = `
     ${scene("mangalyam", [143, 189, 717], "The groom tying the mangalsutra as the bride bows her head, a relative holding her braid, in Bapu's painting", { te: "మాంగల్య ధారణ", en: "Mangalya Dharana" })}
     ${scene(
       "saptapadi",
-      [235, 177, 538],
+      [235, 10, 538],
       "The bride and groom walking around the sacred fire, their garments tied together, in Bapu's painting",
       { te: "సప్తపది", en: "Saptapadi" },
-      `<div class="glow" aria-hidden="true"></div>`
+      `<div class="glow" aria-hidden="true"></div>`,
+      { arch: false }
     )}
   </section>
   <section class="countdown" id="countdown" aria-labelledby="countdown-title">
     <div class="rule rule--edge" data-draw aria-hidden="true"></div>
     <div class="countdown__inner">
-      <p class="eyebrow" id="countdown-title" data-reveal>Until the Muhurtham</p>
+      <p class="eyebrow" id="countdown-title" data-reveal>Until the ${esc(w.muhurthamLabel)}</p>
       <div class="countdown__grid" data-reveal style="--i:1" role="timer" aria-live="off">
         ${["days", "hours", "minutes", "seconds"]
           .map(
@@ -218,9 +230,9 @@ const calendar = `
     <h2 class="save__title heading" id="calendar-title" data-reveal style="--i:1">Add it to your calendar</h2>
     <div class="save__actions" data-reveal style="--i:2">
       <a class="btn" href="wedding.ics" download="Tarun-Priyamvada-Wedding.ics">Apple · Outlook</a>
-      <a class="btn btn--light" href="${esc(googleCalendarUrl(config))}" target="_blank" rel="noopener noreferrer">Google Calendar</a>
+      <a class="btn btn--light" href="add-to-google.html" target="_blank" rel="noopener">Google Calendar</a>
     </div>
-    <p class="save__note caption" data-reveal style="--i:3">${esc(w.dateLong)}&nbsp;· ${esc(w.startsAt)} (IST)</p>
+    <p class="save__note caption" data-reveal style="--i:3">${esc(w.dateLong)}&nbsp;· ${esc(w.muhurthamLabel)} ${esc(w.muhurtham)} (IST)</p>
   </section>`;
 
 const closing = `
@@ -254,7 +266,7 @@ document.getElementById("app").innerHTML =
 // The sacred fire's flames flicker over their own painted flames.
 document
   .querySelector(".scene--saptapadi .stage")
-  .insertAdjacentHTML("beforeend", layer("flame", "saptapadi-flame", [440, 542, 159]));
+  .insertAdjacentHTML("beforeend", layer("flame", "saptapadi-flame", [440, 375, 159]));
 
 /* ============================================================
    THORANAM — a row of painted tiles that sway in a breeze
@@ -338,7 +350,7 @@ document
   .forEach((el) => io.observe(el));
 
 /* ============================================================
-   COUNTDOWN to the muhurtham — digits roll as they change
+   COUNTDOWN to the Sumuhurtham — digits roll as they change
    ============================================================ */
 
 const target = new Date(w.muhurthamISO).getTime();
