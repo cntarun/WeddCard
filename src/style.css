@@ -51,10 +51,6 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-html.is-locked {
-  overflow: hidden;
-}
-
 body {
   margin: 0;
   min-height: 100svh;
@@ -683,8 +679,14 @@ img {
   }
 }
 
+.hero__lead {
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--text);
+}
+
 .hero__intro .eyebrow {
-  margin-top: 0.8rem;
+  margin-top: 1rem;
 }
 
 .hero__short {
@@ -911,6 +913,12 @@ img {
 
 .hosts em {
   font-size: 0.92em;
+  color: var(--text-soft);
+}
+
+.invite-lead {
+  margin-bottom: 1rem;
+  font-style: italic;
   color: var(--text-soft);
 }
 
@@ -1263,16 +1271,20 @@ img {
   right: max(1rem, env(safe-area-inset-right));
   bottom: max(1rem, env(safe-area-inset-bottom));
   z-index: 40;
-  display: grid;
-  place-items: center;
-  width: 3rem;
-  height: 3rem;
-  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  height: 2.9rem;
+  padding: 0 1.1rem 0 0.8rem;
   border: 2px solid var(--lemon);
-  border-radius: 50%;
+  border-radius: 999px;
   background: var(--vermilion);
   box-shadow: 0 0 0 2px var(--vermilion), 0 8px 18px -8px rgba(120, 20, 0, 0.6);
   color: var(--lemon);
+  font-family: var(--body);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   cursor: pointer;
   opacity: 0;
   pointer-events: none;
@@ -1285,17 +1297,18 @@ img {
 }
 
 .music svg {
-  width: 1.2rem;
-  height: 1.2rem;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  width: 1.05rem;
+  height: 1.05rem;
+  fill: currentColor;
 }
 
-.music[aria-pressed="true"] .music__mute {
+.music__pause,
+.music.is-playing .music__play {
   display: none;
+}
+
+.music.is-playing .music__pause {
+  display: block;
 }
 
 /* ---------- small screens ---------- */

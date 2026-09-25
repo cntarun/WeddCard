@@ -9,7 +9,7 @@ export const config = {
   // Browser-tab / link-preview title. [TODO] final title to be confirmed.
   title: "Tarun & Priyamvada · Wedding Invitation",
   description:
-    "Tarun Chellaboyina & Priyamvada Mahesh · Sunday, 13 December 2026 · Grand Lawns, Jal Vihaar, Hyderabad",
+    "Tarun Chellaboyina & Priyamvada Mahesh · Sunday, 13 December 2026 · Grand Lawns, Jalavihar, Hyderabad",
 
   // Where the site will live — used for the WhatsApp / social preview image.
   // Leave as-is for GitHub Pages; change if you move to a custom domain.
@@ -22,6 +22,8 @@ export const config = {
     "Smt. Saradamba (Late) & Sri Ch. Siva Rao",
     "Smt. Hemalatha Rao & Wg Cdr S. Srinivasa Rao (Late)",
   ],
+  // The invitation opens with this line, as on the card.
+  blessingLine: "With the blessings of Lord Ganesha",
   inviteLine: "cordially invite you to the wedding of their grandson",
 
   groom: {
@@ -51,17 +53,17 @@ export const config = {
   },
 
   venue: {
-    name: "Grand Lawns, Jal Vihaar", // spelled as on the card — [TODO] confirm vs "Jalavihar"
+    name: "Grand Lawns, Jalavihar",
     city: "Hyderabad",
     mapUrl: "https://www.google.com/maps/search/?api=1&query=Grand+Lawns+Jalavihar+Hyderabad",
   },
 
-  // [TODO] song to be chosen. Drop an MP3 into /public/audio/ and set
-  // src to e.g. "audio/our-song.mp3" — the music button appears on its own.
+  // Background music: starts softly when the invitation is opened, with a
+  // play/pause button. Swap the MP3 in /public/audio/ to change the song.
   music: {
-    src: "",
-    title: "",
-    artist: "",
+    src: "audio/vachindamma.mp3",
+    title: "Vachindamma",
+    artist: "Geetha Govindam",
   },
 
   // Shown at the foot of the page, beneath the last painting.

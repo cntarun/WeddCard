@@ -87,18 +87,19 @@ const hero = `
 
     <div class="hero__text">
       <div class="hero__intro" id="hero-intro">
-        <p class="telugu" lang="te" data-rise style="--i:0">${esc(config.blessing)}</p>
+        <p class="hero__lead" data-rise style="--i:0">${esc(config.blessingLine)}</p>
         <p class="eyebrow" data-rise style="--i:1">The wedding of</p>
         <p class="hero__short" id="intro-title" data-rise style="--i:2">${esc(groom.firstName)} <span>&amp;</span> ${esc(bride.firstName)}</p>
         <button type="button" class="btn" id="open-invite" data-rise style="--i:3">Open the invitation</button>
       </div>
       <div class="hero__names" id="hero-names" tabindex="-1">
+        <p class="telugu" lang="te" data-reveal>${esc(config.blessing)}</p>
         <h1>
-          <span class="name" data-reveal style="--i:0">${esc(groom.name)}</span>
-          <span class="amp" data-reveal style="--i:1" aria-label="and">&amp;</span>
-          <span class="name" data-reveal style="--i:2">${esc(bride.name)}</span>
+          <span class="name" data-reveal style="--i:1">${esc(groom.name)}</span>
+          <span class="amp" data-reveal style="--i:2" aria-label="and">&amp;</span>
+          <span class="name" data-reveal style="--i:3">${esc(bride.name)}</span>
         </h1>
-        <p class="hero__date" data-reveal style="--i:3">${esc(w.dateLong)} <span aria-hidden="true">·</span> ${esc(venue.city)}</p>
+        <p class="hero__date" data-reveal style="--i:4">${esc(w.dateLong)} <span aria-hidden="true">·</span> ${esc(venue.city)}</p>
       </div>
     </div>
   </header>`;
@@ -107,12 +108,13 @@ const rule = `<div class="rule" data-draw aria-hidden="true"></div>`;
 
 const invitation = `
   <section class="section invitation" id="invitation" aria-label="Invitation">
-    <div class="hosts" data-reveal>
+    <p class="invite-lead" data-reveal>${esc(config.blessingLine)},</p>
+    <div class="hosts" data-reveal style="--i:1">
       ${config.hosts.map((h) => `<p>${hostLine(h)}</p>`).join("")}
     </div>
-    <p class="invite-line" data-reveal style="--i:1">${esc(config.inviteLine)}</p>
+    <p class="invite-line" data-reveal style="--i:2">${esc(config.inviteLine)}</p>
 
-    <div class="person" data-reveal style="--i:2">
+    <div class="person" data-reveal style="--i:3">
       <h2 class="person__name">${esc(groom.name)}</h2>
       <p class="person__parents">${esc(groom.parents)}</p>
     </div>
@@ -230,15 +232,17 @@ const closing = `
   </footer>`;
 
 const musicToggle = music.src
-  ? `<button type="button" class="music" id="music" aria-pressed="false" aria-label="Play music${music.title ? `: ${esc(music.title)}` : ""}">
-       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/><path class="music__mute" d="M3 3l18 18"/></svg>
+  ? `<button type="button" class="music" id="music" aria-pressed="false" aria-label="Play music: ${esc(music.title)}">
+       <svg class="music__play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+       <svg class="music__pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5.5h3v13h-3zM13.5 5.5h3v13h-3z"/></svg>
+       <span class="music__label" aria-hidden="true">${esc(music.title)}</span>
      </button>
-     <audio id="audio" src="${esc(music.src)}" loop preload="none"></audio>`
+     <audio id="audio" src="${esc(music.src)}" loop preload="auto"></audio>`
   : "";
 
 document.getElementById("app").innerHTML =
   garland +
-  `<main id="main">${hero}${rule}<div id="rest" inert>${invitation}${rule}${details}${countdown}${calendar}${closing}</div></main>` +
+  `<main id="main">${hero}<div id="rest" hidden>${rule}${invitation}${rule}${details}${countdown}${calendar}${closing}</div></main>` +
   musicToggle;
 
 // The sacred fire's flames flicker over their own painted flames.
@@ -278,7 +282,6 @@ const decoded = (imgs) =>
 const body = document.body;
 const heroStage = document.getElementById("hero-stage");
 body.classList.add("is-intro");
-document.documentElement.classList.add("is-locked");
 
 // Opening: the thoranam is hung, the arch unfurls, the banana plants grow,
 // then Ganesha, the dhol and the offerings are sketched and coloured in.
@@ -294,8 +297,7 @@ const rest = document.getElementById("rest");
 function openInvitation() {
   body.classList.remove("is-intro");
   body.classList.add("is-open");
-  document.documentElement.classList.remove("is-locked");
-  rest.inert = false;
+  rest.hidden = false;
   const couple = heroStage.querySelector(".couple");
   // Rice falls from above the arch down past the couple's feet.
   couple.style.setProperty("--fall", `${Math.round(couple.clientHeight * 1.05)}px`);
@@ -330,7 +332,7 @@ const io = new IntersectionObserver(
 );
 
 document
-  .querySelectorAll("#rest [data-reveal], #rest [data-draw], #rest [data-scene], main > .rule")
+  .querySelectorAll("#rest [data-reveal], #rest [data-draw], #rest [data-scene]")
   .forEach((el) => io.observe(el));
 
 /* ============================================================
@@ -376,43 +378,48 @@ timer = setInterval(tick, 1000);
 const audio = document.getElementById("audio");
 const musicBtn = document.getElementById("music");
 
-function setPlaying(on) {
+// The button always shows the song's real state — play or pause.
+function reflect() {
+  const on = !audio.paused;
   musicBtn.setAttribute("aria-pressed", String(on));
-  musicBtn.setAttribute("aria-label", `${on ? "Pause" : "Play"} music${music.title ? `: ${music.title}` : ""}`);
+  musicBtn.setAttribute("aria-label", `${on ? "Pause" : "Play"} music: ${music.title}`);
+  musicBtn.classList.toggle("is-playing", on);
 }
 
-// Gentle fade so the song never starts abruptly.
-function fadeTo(vol, ms = 1600) {
+// Gentle fades so the song never starts or stops abruptly.
+let fade;
+function fadeTo(vol, ms, then) {
+  cancelAnimationFrame(fade);
   const from = audio.volume;
   const t0 = performance.now();
   const step = (t) => {
     const k = Math.min(1, (t - t0) / ms);
-    audio.volume = from + (vol - from) * k;
-    if (k < 1) requestAnimationFrame(step);
-    else if (vol === 0) audio.pause();
+    audio.volume = Math.min(1, Math.max(0, from + (vol - from) * k));
+    if (k < 1) fade = requestAnimationFrame(step);
+    else then?.();
   };
-  requestAnimationFrame(step);
+  fade = requestAnimationFrame(step);
 }
 
-function startMusic() {
-  if (!audio) return;
+function play() {
   audio.volume = 0;
   audio
     .play()
-    .then(() => {
-      fadeTo(0.6);
-      setPlaying(true);
-    })
-    .catch(() => setPlaying(false));
+    .then(() => fadeTo(0.6, 1600))
+    .catch(() => {}); // blocked until a tap — the button stays on "play"
 }
 
-musicBtn?.addEventListener("click", () => {
-  if (audio.paused || musicBtn.getAttribute("aria-pressed") === "false") {
-    audio.volume = 0;
-    audio.play().then(() => fadeTo(0.6)).catch(() => {});
-    setPlaying(true);
-  } else {
-    fadeTo(0, 600);
-    setPlaying(false);
-  }
-});
+function pause() {
+  fadeTo(0, 500, () => audio.pause());
+}
+
+// Opening the invitation is a tap, so browsers allow the song to start.
+function startMusic() {
+  if (audio) play();
+}
+
+if (audio) {
+  audio.addEventListener("play", reflect);
+  audio.addEventListener("pause", reflect);
+  musicBtn.addEventListener("click", () => (audio.paused ? play() : pause()));
+}

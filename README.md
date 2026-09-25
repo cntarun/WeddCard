@@ -5,7 +5,7 @@ paper, a mango-leaf thoranam, the ornate red-and-yellow arch, banana plants,
 blue kolam motifs and the painted border band. Each painting was cut into
 layers so every piece can move on its own.
 
-- **Opening** — the thoranam is hung from the centre outwards, the arch
+- **Opening** — "With the blessings of Lord Ganesha": the thoranam is hung from the centre outwards, the arch
   unfurls, the banana plants grow; Ganesha is sketched in ink, coloured in,
   and dances, with the dhol keeping the beat and the offerings beside him.
 - **Hero** — on *Open the invitation*, Ganesha rises away and the couple
@@ -21,7 +21,8 @@ layers so every piece can move on its own.
 - **Add to calendar** (Apple / Outlook `.ics` + Google Calendar).
 - **Closing** — saptapadi around a glowing, flickering sacred fire, banana
   plants either side, and the credit *Paintings by Bapu*.
-- **Music toggle** — appears automatically once a song is set (see below).
+- **Music** — "Vachindamma" starts softly when the invitation is opened,
+  with a play/pause button.
 
 Everything honours *Reduce Motion*: those guests see the finished paintings.
 

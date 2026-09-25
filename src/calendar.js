@@ -63,15 +63,18 @@ export function buildIcs(config) {
   return lines.map(fold).join("\r\n") + "\r\n";
 }
 
+// Google's "eventedit" form opens a pre-filled event in any browser. (The
+// older render?action=TEMPLATE link is often handed to the Calendar app on
+// phones, which opens without the event.) The dates keep a literal "/".
 export function googleCalendarUrl(config) {
   const e = eventDetails(config);
-  const params = new URLSearchParams({
-    action: "TEMPLATE",
-    text: e.title,
-    dates: `${e.start}/${e.end}`,
-    details: e.description,
-    location: e.location,
-    ctz: "Asia/Kolkata",
-  });
-  return `https://calendar.google.com/calendar/render?${params}`;
+  const q = (s) => encodeURIComponent(s);
+  return (
+    "https://calendar.google.com/calendar/r/eventedit" +
+    `?text=${q(e.title)}` +
+    `&dates=${e.start}/${e.end}` +
+    `&ctz=Asia/Kolkata` +
+    `&details=${q(e.description)}` +
+    `&location=${q(e.location)}`
+  );
 }
