@@ -1,0 +1,912 @@
+/* ============================================================
+   THEME — ink on ivory, in the manner of Bapu.
+   Colour is used sparingly: gold, maroon and turmeric appear only
+   as washes on the drawings and on the names.
+   ============================================================ */
+
+:root {
+  --paper: #fbf6ec;
+  --paper-deep: #f3e9d6;
+  --ink: #3a2622;
+  --ink-fill: #2e1d1a;
+  --ink-soft: #6b5650;
+  --maroon: #7e1f2b;
+  --gold: #b8862b;
+  --gold-text: #8a6220;
+  --gold-wash: #c9973a;
+  --turmeric: #e3a72f;
+
+  --display: "Cormorant Garamond", "Cormorant", Georgia, serif;
+  --body: "EB Garamond", Georgia, "Times New Roman", serif;
+  --telugu: "Gurajada", "Noto Serif Telugu", "Noto Sans Telugu", serif;
+
+  /* soft, liquid easing — never mechanical */
+  --ease-ink: cubic-bezier(0.45, 0.05, 0.3, 1);
+  --ease-float: cubic-bezier(0.2, 0.75, 0.25, 1);
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+html.is-locked {
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  background-color: var(--paper);
+  /* barely-there paper grain + a warm centre */
+  background-image:
+    radial-gradient(ellipse 90% 60% at 50% 0%, rgba(255, 253, 247, 0.9), transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.23 0 0 0 0 0.15 0 0 0 0 0.13 0 0 0 0.035 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+main:focus {
+  outline: none;
+}
+
+p,
+h1,
+h2 {
+  margin: 0;
+  text-wrap: balance;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- typography ---------- */
+
+.telugu {
+  font-family: var(--telugu);
+  color: var(--maroon);
+  font-size: clamp(1.55rem, 5.4vw, 2rem);
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+}
+
+.eyebrow {
+  font-family: var(--body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+}
+
+/* ---------- layout ---------- */
+
+.section {
+  position: relative;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: clamp(3.5rem, 9vh, 6rem) 1.25rem;
+  text-align: center;
+}
+
+/* ---------- buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  min-height: 2.9rem;
+  padding: 0.7rem 1.6rem;
+  border: 1px solid rgba(126, 31, 43, 0.45);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--maroon);
+  font-family: var(--body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.5s var(--ease-float),
+    border-color 0.5s var(--ease-float),
+    color 0.5s var(--ease-float);
+}
+
+.btn:hover {
+  background-color: var(--maroon);
+  border-color: var(--maroon);
+  color: var(--paper);
+}
+
+.btn:focus-visible,
+.music:focus-visible,
+.scroll-cue:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.btn--quiet {
+  margin-top: 1.6rem;
+  border-color: rgba(184, 134, 43, 0.55);
+  color: var(--gold-text);
+}
+
+.btn--quiet:hover {
+  background-color: var(--gold-text);
+  border-color: var(--gold-text);
+}
+
+/* ============================================================
+   LINE ART — drawn stroke by stroke
+   Each .ink path has pathLength="1"; its --d / --t (delay / time)
+   are set per stroke in art.js.
+   ============================================================ */
+
+.art {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.art .ink {
+  fill: none;
+  stroke: var(--ink);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+}
+
+.is-drawn .ink {
+  animation: draw var(--t) var(--ease-ink) var(--d) both;
+}
+
+@keyframes draw {
+  0% {
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+  2% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+/* washes, fills and small details fade in after the ink */
+.art .wash,
+.art .ink-fill,
+.art .ink-dot,
+.art .ink-ring,
+.art .ink-static,
+.art .jasmine-bud {
+  opacity: 0;
+}
+
+.wash {
+  stroke: none;
+}
+.wash--gold {
+  fill: var(--gold-wash);
+  --o: 0.36;
+}
+.wash--maroon {
+  fill: var(--maroon);
+  --o: 0.3;
+}
+.wash--turmeric {
+  fill: var(--turmeric);
+  --o: 0.9;
+}
+.wash--flame-core {
+  fill: #fff6df;
+  --o: 0.95;
+}
+.dot.wash--maroon {
+  --o: 0.85;
+}
+.dot.wash--gold,
+.dot.wash--turmeric {
+  --o: 0.95;
+}
+
+.ink-fill {
+  fill: var(--ink-fill);
+  --o: 1;
+}
+.ink-dot {
+  fill: var(--ink);
+  --o: 1;
+}
+.ink-ring {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1;
+  --o: 1;
+}
+.ink-static {
+  fill: none;
+  stroke: var(--ink);
+  --o: 1;
+}
+.jasmine-bud {
+  fill: #fffdf6;
+  stroke: var(--ink);
+  stroke-width: 0.7;
+  --o: 1;
+}
+
+.is-drawn :is(.wash, .ink-fill, .ink-dot, .ink-ring, .ink-static, .jasmine-bud) {
+  animation: wash 1.1s ease-out var(--d) both;
+}
+
+@keyframes wash {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: var(--o);
+  }
+}
+
+/* talambralu — rice drifts down onto his head */
+.is-drawn .rice {
+  animation: rice 1.4s var(--ease-float) var(--d) both;
+}
+
+@keyframes rice {
+  from {
+    opacity: 0;
+    transform: translateY(-7px);
+  }
+  to {
+    opacity: var(--o);
+    transform: none;
+  }
+}
+
+/* the diya's flame blooms, then breathes */
+.flame {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+.is-drawn .flame {
+  animation:
+    bloom 1.3s cubic-bezier(0.2, 0.9, 0.3, 1.15) var(--d) both,
+    flicker 2.8s ease-in-out calc(var(--d) + 1.3s) infinite alternate;
+}
+
+@keyframes bloom {
+  from {
+    opacity: 0;
+    transform: scale(0.15);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes flicker {
+  0% {
+    transform: scale(1, 1) skewX(0deg);
+  }
+  35% {
+    transform: scale(0.97, 1.04) skewX(-1.2deg);
+  }
+  70% {
+    transform: scale(1.02, 0.98) skewX(0.8deg);
+  }
+  100% {
+    transform: scale(0.99, 1.03) skewX(-0.4deg);
+  }
+}
+
+.art--mirror {
+  transform: scaleX(-1);
+}
+
+/* ============================================================
+   REVEAL ON SCROLL — a slow, fluid rise
+   ============================================================ */
+
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 1.1s ease-out,
+    transform 1.5s var(--ease-float);
+  transition-delay: calc(var(--i, 0) * 140ms);
+}
+
+.js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============================================================
+   INTRO — the diya blooms, then the invitation opens
+   ============================================================ */
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 2rem 1.25rem;
+  background: var(--paper);
+  transition:
+    opacity 1.2s ease,
+    visibility 1.2s;
+}
+
+.intro.is-leaving {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.intro__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 1.3s var(--ease-float);
+}
+
+.intro.is-leaving .intro__inner {
+  transform: translateY(-24px);
+}
+
+.intro__art {
+  width: min(52vw, 190px);
+}
+
+.intro__blessing,
+.intro__eyebrow,
+.intro__names,
+.intro__open {
+  opacity: 0;
+  animation: rise 1.2s var(--ease-float) both;
+}
+
+.intro__blessing {
+  margin-top: 0.4rem;
+  animation-delay: 2.6s;
+}
+
+.intro__eyebrow {
+  margin-top: 1.3rem;
+  animation-delay: 3s;
+}
+
+.intro__names {
+  margin-top: 0.3rem;
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(1.7rem, 6.5vw, 2.1rem);
+  color: var(--maroon);
+  animation-delay: 3.2s;
+}
+
+.intro__names span {
+  font-weight: 500;
+  color: var(--gold);
+}
+
+.intro__open {
+  margin-top: 2.2rem;
+  animation-delay: 3.7s;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.hero {
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 3rem;
+  padding-bottom: 5rem;
+}
+
+.hero__art {
+  width: min(92vw, 440px);
+}
+
+.hero__names {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.4rem;
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.05;
+  color: var(--maroon);
+}
+
+.hero__names .name {
+  font-size: clamp(2.3rem, 9.2vw, 3.6rem);
+  letter-spacing: 0.005em;
+}
+
+.hero__names .amp {
+  margin: 0.15rem 0;
+  font-size: clamp(1.4rem, 5vw, 1.9rem);
+  font-weight: 500;
+  color: var(--gold);
+}
+
+.hero__date {
+  margin-top: 1.2rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  display: block;
+  width: 20px;
+  height: 52px;
+  margin-left: -10px;
+}
+
+.scroll-cue svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.scroll-cue path {
+  stroke-dasharray: 1 1;
+  animation: cue 3.4s var(--ease-ink) 2.4s infinite;
+  stroke-dashoffset: 1;
+}
+
+@keyframes cue {
+  0% {
+    stroke-dashoffset: 1;
+  }
+  55%,
+  75% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   INVITATION
+   ============================================================ */
+
+.invitation__art {
+  width: 104px;
+  margin: 0 auto 1rem;
+}
+
+.hosts {
+  margin-top: 2rem;
+  font-size: 1.08rem;
+  line-height: 1.7;
+}
+
+.hosts em {
+  font-size: 0.92em;
+  color: var(--ink-soft);
+}
+
+.invite-line {
+  margin-top: 1.1rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.person {
+  margin-top: 2.2rem;
+}
+
+.person__name {
+  font-family: var(--display);
+  font-size: clamp(2rem, 7.6vw, 2.9rem);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--maroon);
+}
+
+.person__parents {
+  margin-top: 0.45rem;
+  font-size: 1rem;
+  color: var(--ink-soft);
+}
+
+.with {
+  position: relative;
+  width: min(100%, 300px);
+  margin: 2rem auto 0;
+}
+
+.with__word {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 1.35rem;
+  color: var(--gold-text);
+}
+
+.with + .person {
+  margin-top: 3.2rem;
+}
+
+/* ============================================================
+   WEDDING DETAILS
+   ============================================================ */
+
+.details__thoranam {
+  width: min(100%, 420px);
+  margin: 0 auto 3rem;
+}
+
+.date-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.date-row__side {
+  padding: 0.85rem 0;
+  border-block: 1px solid rgba(184, 134, 43, 0.55);
+  font-size: 0.9rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.date-row__time {
+  letter-spacing: 0.08em;
+  text-transform: none;
+  font-size: 1rem;
+}
+
+.date-row__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.date-row__month,
+.date-row__year {
+  font-size: 0.75rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+  padding-left: 0.34em;
+}
+
+.date-row__day {
+  margin: 0.3rem 0 0.4rem;
+  font-variant-numeric: lining-nums;
+  font-family: var(--display);
+  font-size: 4rem;
+  font-weight: 600;
+  color: var(--maroon);
+}
+
+.muhurtham {
+  margin: 3rem auto 0;
+  padding: 1.6rem 1rem 1.5rem;
+  max-width: 20rem;
+  border-radius: 999px / 60%;
+  background: radial-gradient(ellipse at center, rgba(227, 167, 47, 0.13), transparent 70%);
+}
+
+.muhurtham__time {
+  margin-top: 0.4rem;
+  font-variant-numeric: lining-nums;
+  font-family: var(--display);
+  font-size: clamp(2.4rem, 9vw, 3rem);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--maroon);
+}
+
+.muhurtham__after {
+  margin-top: 0.55rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.venue {
+  position: relative;
+  margin-top: 3.2rem;
+  padding: 0 3.5rem;
+}
+
+.venue__name {
+  margin-top: 0.6rem;
+  font-family: var(--display);
+  font-size: clamp(1.7rem, 6.2vw, 2.2rem);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--maroon);
+}
+
+.venue__city {
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.venue__sprig {
+  position: absolute;
+  top: 0.4rem;
+  width: 46px;
+}
+
+.venue__sprig--l {
+  left: 0;
+}
+
+.venue__sprig--r {
+  right: 0;
+}
+
+/* ============================================================
+   COUNTDOWN
+   ============================================================ */
+
+.countdown__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 28rem;
+  margin: 1.8rem auto 0;
+}
+
+.unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.2rem 0;
+}
+
+.unit + .unit {
+  border-left: 1px solid rgba(184, 134, 43, 0.4);
+}
+
+.unit__num {
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 9vw, 3.3rem);
+  font-weight: 500;
+  line-height: 1.1;
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--ink);
+}
+
+.unit__label {
+  margin-top: 0.3rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+  padding-left: 0.26em;
+}
+
+.countdown__done {
+  margin-top: 1.4rem;
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 1.5rem;
+  color: var(--maroon);
+}
+
+/* ============================================================
+   ADD TO CALENDAR
+   ============================================================ */
+
+.save__title {
+  margin-top: 0.8rem;
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.9rem, 7vw, 2.5rem);
+  color: var(--maroon);
+}
+
+.save__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: 1.8rem;
+}
+
+.save__actions .btn {
+  min-width: 13rem;
+}
+
+.save__note {
+  margin-top: 1.2rem;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+/* ============================================================
+   CLOSING
+   ============================================================ */
+
+.closing {
+  padding-bottom: 6.5rem;
+}
+
+.closing__art {
+  width: 92px;
+  margin: 0 auto;
+}
+
+.closing__blessing {
+  margin-top: 0.4rem;
+}
+
+.closing__line {
+  margin-top: 0.8rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.closing__names {
+  margin-top: 1.4rem;
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.6rem;
+  color: var(--maroon);
+}
+
+/* ============================================================
+   MUSIC TOGGLE
+   ============================================================ */
+
+.music {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  width: 2.9rem;
+  height: 2.9rem;
+  padding: 0;
+  border: 1px solid rgba(184, 134, 43, 0.55);
+  border-radius: 50%;
+  background: rgba(251, 246, 236, 0.92);
+  color: var(--maroon);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease 1.5s;
+}
+
+.is-open .music {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.music svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.music[aria-pressed="true"] .music__mute {
+  display: none;
+}
+
+/* ---------- small screens ---------- */
+
+@media (max-width: 420px) {
+  .date-row {
+    gap: 0.6rem;
+  }
+  .date-row__side {
+    font-size: 0.8rem;
+    letter-spacing: 0.16em;
+  }
+  .date-row__time {
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+  }
+  .venue {
+    padding: 0 2.6rem;
+  }
+  .venue__sprig {
+    width: 36px;
+  }
+  .hosts {
+    font-size: 1rem;
+  }
+  .unit__label {
+    letter-spacing: 0.16em;
+    padding-left: 0.16em;
+  }
+}
+
+/* ---------- reduced motion: finished drawings, no movement ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+  .scroll-cue path {
+    animation: none !important;
+    stroke-dashoffset: 0;
+  }
+}
