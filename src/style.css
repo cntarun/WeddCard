@@ -1,12 +1,14 @@
 /* ============================================================
-   THEME — Bapu's wedding paintings.
-   White paper, a mango-leaf thoranam, the red-and-yellow arch,
-   banana plants, blue kolam motifs and the painted border band.
-   Every colour below is sampled from the paintings themselves.
+   THEME — Bapu's wedding paintings on ivory card stock.
+   A mango-leaf thoranam, the red-and-yellow arch, banana plants,
+   blue kolam motifs and the painted border band; every colour is
+   sampled from the paintings. Typography does the modern work:
+   one warm serif (Fraunces) for names and headings, one clean sans
+   (Jost) for everything else, and Noto Serif Telugu for Telugu.
    ============================================================ */
 
 :root {
-  --paper: #ffffff;
+  --paper: #fbf6ec; /* warm ivory card stock */
   --vermilion: #e23823; /* the border band's red */
   --vermilion-deep: #bf2417; /* the same red, dark enough for text */
   --lemon: #fefc55; /* the band's turmeric-lemon yellow */
@@ -18,9 +20,22 @@
   --text: #3a2a22;
   --text-soft: #6a5448;
 
-  --display: "Rozha One", Georgia, serif;
-  --body: "EB Garamond", Georgia, "Times New Roman", serif;
-  --telugu: "Gurajada", "Noto Serif Telugu", "Noto Sans Telugu", serif;
+  /* two Latin faces, one Telugu face — nothing else anywhere */
+  --serif: "Fraunces", Georgia, serif;
+  --sans: "Jost", "Helvetica Neue", Arial, sans-serif;
+  --telugu: "Noto Serif Telugu", "Noto Sans Telugu", serif;
+
+  /* the type scale — every size on the page is one of these four */
+  --fs-display: clamp(2.5rem, 10vw, 3.9rem);
+  --fs-heading: clamp(1.7rem, 6.4vw, 2.35rem);
+  --fs-body: clamp(1rem, 3.9vw, 1.0625rem);
+  --fs-caption: 0.72rem;
+  /* Telugu's large letterforms read bigger than Latin at the same size;
+     this optical factor matches their visual weight to the heading step */
+  --te-optical: 0.78;
+
+  --track-caps: 0.32em; /* uppercase labels and buttons */
+  --track-body: 0.03em;
 
   --ease-float: cubic-bezier(0.2, 0.75, 0.25, 1);
   --ease-bloom: cubic-bezier(0.2, 0.9, 0.3, 1.25);
@@ -55,11 +70,17 @@ body {
   margin: 0;
   min-height: 100svh;
   overflow-x: hidden;
-  background: var(--paper);
+  background-color: var(--paper);
+  /* paper grain, and a faint tone-on-tone block-print buti in a half-drop */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .35 0 0 0 0 .2 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84'%3E%3Cg fill='%23b28a4e' fill-opacity='.075'%3E%3Cg id='b'%3E%3Cpath d='M21 12c-3 4-3 8 0 11 3-3 3-7 0-11z'/%3E%3Cpath d='M20.6 23c-4-.3-6.6-2.6-7.4-6 3.6.3 6 2.4 7.4 6zM21.4 23c4-.3 6.6-2.6 7.4-6-3.6.3-6 2.4-7.4 6z'/%3E%3Cpath d='M20.5 23h1l-.2 5h-.6z'/%3E%3C/g%3E%3Cuse href='%23b' x='42' y='42'/%3E%3C/g%3E%3C/svg%3E");
   color: var(--text);
-  font-family: var(--body);
-  font-size: 1.125rem;
-  line-height: 1.6;
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: var(--fs-body);
+  line-height: 1.75;
+  letter-spacing: var(--track-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -98,20 +119,63 @@ img {
 
 /* ---------- typography ---------- */
 
+/* Telugu: heading step, optically matched; roomy line height */
 .telugu {
   font-family: var(--telugu);
+  font-weight: 500;
+  font-size: calc(var(--fs-heading) * var(--te-optical));
+  line-height: 1.6;
+  letter-spacing: 0;
   color: var(--vermilion-deep);
-  font-size: clamp(1.55rem, 5.4vw, 2rem);
-  line-height: 1.3;
 }
 
-.eyebrow {
-  font-family: var(--body);
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.3em;
+/* caption: the modern, editorial voice — small, tracked capitals */
+.eyebrow,
+.caption {
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: var(--track-caps);
   text-transform: uppercase;
   color: var(--blue);
+}
+
+/* display & heading: the traditional voice — a warm, substantial serif */
+.display,
+.heading {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-variation-settings: "opsz" 144;
+  letter-spacing: -0.005em;
+  word-spacing: 0.12em; /* Fraunces sets words tight at large optical sizes */
+  color: var(--vermilion-deep);
+}
+
+.display {
+  font-size: var(--fs-display);
+  line-height: 1.04;
+}
+
+.heading {
+  font-size: var(--fs-heading);
+  line-height: 1.12;
+}
+
+/* the serif's italic, for the small joining words: "&", "with" */
+.joiner {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: var(--fs-heading);
+  line-height: 1;
+  color: var(--blue);
+}
+
+/* a quiet italic line in the sans, as in "Together with their families" */
+.lead {
+  font-style: italic;
+  color: var(--text-soft);
 }
 
 /* ---------- layout ---------- */
@@ -120,7 +184,7 @@ img {
   position: relative;
   max-width: 40rem;
   margin: 0 auto;
-  padding: clamp(3rem, 8vh, 5rem) 1.25rem;
+  padding: clamp(4rem, 11vh, 7rem) 1.5rem;
   text-align: center;
 }
 
@@ -138,10 +202,10 @@ img {
   background: var(--vermilion);
   box-shadow: 0 0 0 2px var(--vermilion), 0 6px 16px -8px rgba(160, 30, 10, 0.6);
   color: var(--lemon);
-  font-family: var(--body);
-  font-size: 0.82rem;
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
   font-weight: 500;
-  letter-spacing: 0.22em;
+  letter-spacing: var(--track-caps);
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
@@ -679,55 +743,31 @@ img {
   }
 }
 
-.hero__lead {
-  font-style: italic;
-  font-size: 1.2rem;
-  color: var(--text);
-}
-
 .hero__intro .eyebrow {
-  margin-top: 1rem;
+  margin-top: 1.6rem;
 }
 
 .hero__short {
-  margin-top: 0.2rem;
-  font-family: var(--display);
-  font-size: clamp(2rem, 8vw, 2.8rem);
-  line-height: 1.1;
-  color: var(--vermilion-deep);
-}
-
-.hero__short span,
-.hero__names .amp {
-  color: var(--blue);
+  margin-top: 0.5rem;
 }
 
 #open-invite {
-  margin-top: 1.5rem;
+  margin-top: 2.4rem;
 }
 
 .hero__names h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: var(--display);
-  font-weight: 400;
-  line-height: 1.08;
-  color: var(--vermilion-deep);
+  margin: 1.6rem 0 0;
 }
 
-.hero__names .name {
-  font-size: clamp(2.2rem, 9vw, 3.6rem);
-}
-
-.hero__names .amp {
-  margin: 0.1rem 0;
-  font-size: clamp(1.5rem, 5.4vw, 2.1rem);
+.hero__names .joiner {
+  margin: 0.35rem 0 0.45rem;
 }
 
 .hero__date {
-  margin-top: 0.9rem;
-  font-style: italic;
+  margin-top: 1.8rem;
   color: var(--text-soft);
 }
 
@@ -903,8 +943,7 @@ img {
    ============================================================ */
 
 .hosts {
-  font-size: 1.08rem;
-  line-height: 1.75;
+  line-height: 1.8;
 }
 
 .hosts .nowrap {
@@ -912,37 +951,23 @@ img {
 }
 
 .hosts em {
-  font-size: 0.92em;
   color: var(--text-soft);
 }
 
 .invite-lead {
-  margin-bottom: 1rem;
-  font-style: italic;
-  color: var(--text-soft);
+  margin-bottom: 1.4rem;
 }
 
 .invite-line {
-  margin-top: 1.1rem;
-  font-style: italic;
-  color: var(--text-soft);
+  margin-top: 1.4rem;
 }
 
 .person {
-  margin-top: 2.2rem;
-}
-
-.person__name {
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(2rem, 7.6vw, 2.8rem);
-  line-height: 1.12;
-  color: var(--vermilion-deep);
+  margin-top: 3.4rem;
 }
 
 .person__parents {
-  margin-top: 0.45rem;
-  font-size: 1rem;
+  margin-top: 0.8rem;
   color: var(--text-soft);
 }
 
@@ -951,21 +976,15 @@ img {
   align-items: center;
   justify-content: center;
   gap: 0.9rem;
-  margin: 2rem auto 0;
+  margin: 3rem auto 0;
 }
 
 .with__motif {
   width: min(28vw, 118px);
 }
 
-.with__word {
-  font-style: italic;
-  font-size: 1.4rem;
-  color: var(--blue);
-}
-
 .with + .person {
-  margin-top: 1.4rem;
+  margin-top: 2.2rem;
 }
 
 /* ============================================================
@@ -985,17 +1004,9 @@ img {
 }
 
 .date-row__side {
-  padding: 0.85rem 0;
+  padding: 0.95rem 0;
   border-block: 3px double var(--vermilion);
-  font-size: 0.9rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
-.date-row__time {
-  letter-spacing: 0.06em;
-  text-transform: none;
-  font-size: 1rem;
+  color: var(--text);
 }
 
 .date-row__center {
@@ -1007,17 +1018,12 @@ img {
 
 .date-row__month,
 .date-row__year {
-  font-size: 0.75rem;
-  letter-spacing: 0.34em;
-  padding-left: 0.34em;
-  text-transform: uppercase;
-  color: var(--blue);
+  padding-left: var(--track-caps);
 }
 
 .date-row__day {
-  margin: 0.35rem 0 0.3rem;
-  font-family: var(--display);
-  font-size: 4.2rem;
+  margin: 0.4rem 0 0.35rem;
+  font-variant-numeric: lining-nums;
   color: var(--vermilion);
 }
 
@@ -1059,34 +1065,30 @@ img {
   color: var(--vermilion-deep);
 }
 
+.muhurtham .telugu {
+  line-height: 1.5;
+}
+
 .muhurtham__time {
-  margin-top: 0.35rem;
-  font-family: var(--display);
-  font-size: clamp(2.4rem, 9vw, 3rem);
-  line-height: 1;
-  color: var(--vermilion-deep);
+  margin-top: 0.5rem;
+  font-variant-numeric: lining-nums;
 }
 
 .muhurtham__after {
-  margin-top: 0.5rem;
-  font-style: italic;
+  margin-top: 0.6rem;
   color: var(--text);
 }
 
 .venue {
-  margin-top: 3.2rem;
+  margin-top: 4.2rem;
 }
 
 .venue__name {
-  margin-top: 0.5rem;
-  font-family: var(--display);
-  font-size: clamp(1.7rem, 6.4vw, 2.3rem);
-  line-height: 1.15;
-  color: var(--vermilion-deep);
+  margin-top: 0.8rem;
 }
 
 .venue__city {
-  font-style: italic;
+  margin-top: 0.3rem;
   color: var(--text-soft);
 }
 
@@ -1108,7 +1110,7 @@ img {
 }
 
 .countdown__inner {
-  padding: 2.6rem 1rem 2.8rem;
+  padding: 3.4rem 1rem 3.6rem;
 }
 
 .countdown .eyebrow {
@@ -1135,10 +1137,8 @@ img {
 
 .unit__num {
   display: block;
-  font-family: var(--display);
-  font-size: clamp(2.2rem, 9vw, 3.4rem);
   line-height: 1.15;
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric: lining-nums tabular-nums;
   color: var(--lemon);
 }
 
@@ -1158,18 +1158,13 @@ img {
 }
 
 .unit__label {
-  margin-top: 0.2rem;
-  font-size: 0.68rem;
-  letter-spacing: 0.24em;
-  padding-left: 0.24em;
-  text-transform: uppercase;
+  margin-top: 0.4rem;
+  padding-left: var(--track-caps);
   color: #fff;
 }
 
 .countdown__done {
   margin-top: 1.2rem;
-  font-family: var(--display);
-  font-size: 1.6rem;
   color: var(--lemon);
 }
 
@@ -1178,12 +1173,7 @@ img {
    ============================================================ */
 
 .save__title {
-  margin-top: 0.6rem;
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(1.9rem, 7vw, 2.5rem);
-  line-height: 1.15;
-  color: var(--vermilion-deep);
+  margin-top: 1rem;
 }
 
 .save__actions {
@@ -1191,7 +1181,7 @@ img {
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
-  margin-top: 1.8rem;
+  margin-top: 2.4rem;
 }
 
 .save__actions .btn {
@@ -1199,9 +1189,7 @@ img {
 }
 
 .save__note {
-  margin-top: 1.2rem;
-  font-size: 0.95rem;
-  font-style: italic;
+  margin-top: 1.6rem;
   color: var(--text-soft);
 }
 
@@ -1214,6 +1202,7 @@ img {
 }
 
 .closing .section {
+  padding-top: 1rem;
   padding-bottom: 3.5rem;
 }
 
@@ -1222,16 +1211,11 @@ img {
 }
 
 .closing__line {
-  margin-top: 0.7rem;
-  font-style: italic;
-  color: var(--text-soft);
+  margin-top: 1rem;
 }
 
 .closing__names {
-  margin-top: 1rem;
-  font-family: var(--display);
-  font-size: 1.8rem;
-  color: var(--vermilion-deep);
+  margin-top: 1.8rem;
 }
 
 .closing__plants img {
@@ -1255,9 +1239,8 @@ img {
 }
 
 .credit {
-  padding: 0.9rem 1rem 1.4rem;
-  font-size: 0.85rem;
-  font-style: italic;
+  /* room beneath for the floating music button */
+  padding: 1.2rem 1rem 5.5rem;
   text-align: center;
   color: var(--text-soft);
 }
@@ -1281,9 +1264,10 @@ img {
   background: var(--vermilion);
   box-shadow: 0 0 0 2px var(--vermilion), 0 8px 18px -8px rgba(120, 20, 0, 0.6);
   color: var(--lemon);
-  font-family: var(--body);
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  font-weight: 500;
+  letter-spacing: var(--track-caps);
   text-transform: uppercase;
   cursor: pointer;
   opacity: 0;
@@ -1318,19 +1302,11 @@ img {
     gap: 0.6rem;
   }
   .date-row__side {
-    font-size: 0.8rem;
-    letter-spacing: 0.16em;
-  }
-  .date-row__time {
-    font-size: 0.9rem;
-    letter-spacing: 0.02em;
-  }
-  .hosts {
-    font-size: 1rem;
+    letter-spacing: 0.2em;
   }
   .unit__label {
-    letter-spacing: 0.14em;
-    padding-left: 0.14em;
+    letter-spacing: 0.16em;
+    padding-left: 0.16em;
   }
 }
 

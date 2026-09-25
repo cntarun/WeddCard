@@ -1,3 +1,4 @@
+import "./fonts.css";
 import "./style.css";
 import { config } from "./config.js";
 import { googleCalendarUrl } from "./calendar.js";
@@ -87,19 +88,19 @@ const hero = `
 
     <div class="hero__text">
       <div class="hero__intro" id="hero-intro">
-        <p class="hero__lead" data-rise style="--i:0">${esc(config.blessingLine)}</p>
+        <p class="hero__lead lead" data-rise style="--i:0">${esc(config.blessingLine)}</p>
         <p class="eyebrow" data-rise style="--i:1">The wedding of</p>
-        <p class="hero__short" id="intro-title" data-rise style="--i:2">${esc(groom.firstName)} <span>&amp;</span> ${esc(bride.firstName)}</p>
+        <p class="hero__short display" id="intro-title" data-rise style="--i:2">${esc(groom.firstName)} <span class="joiner">&amp;</span> ${esc(bride.firstName)}</p>
         <button type="button" class="btn" id="open-invite" data-rise style="--i:3">Open the invitation</button>
       </div>
       <div class="hero__names" id="hero-names" tabindex="-1">
         <p class="telugu" lang="te" data-reveal>${esc(config.blessing)}</p>
         <h1>
-          <span class="name" data-reveal style="--i:1">${esc(groom.name)}</span>
-          <span class="amp" data-reveal style="--i:2" aria-label="and">&amp;</span>
-          <span class="name" data-reveal style="--i:3">${esc(bride.name)}</span>
+          <span class="name display" data-reveal style="--i:1">${esc(groom.name)}</span>
+          <span class="amp joiner" data-reveal style="--i:2" aria-label="and">&amp;</span>
+          <span class="name display" data-reveal style="--i:3">${esc(bride.name)}</span>
         </h1>
-        <p class="hero__date" data-reveal style="--i:4">${esc(w.dateLong)} <span aria-hidden="true">·</span> ${esc(venue.city)}</p>
+        <p class="hero__date caption" data-reveal style="--i:4">${esc(w.dateLong)} <span aria-hidden="true">·</span> ${esc(venue.city)}</p>
       </div>
     </div>
   </header>`;
@@ -108,25 +109,25 @@ const rule = `<div class="rule" data-draw aria-hidden="true"></div>`;
 
 const invitation = `
   <section class="section invitation" id="invitation" aria-label="Invitation">
-    <p class="invite-lead" data-reveal>${esc(config.blessingLine)},</p>
+    <p class="invite-lead lead" data-reveal>${esc(config.blessingLine)},</p>
     <div class="hosts" data-reveal style="--i:1">
       ${config.hosts.map((h) => `<p>${hostLine(h)}</p>`).join("")}
     </div>
-    <p class="invite-line" data-reveal style="--i:2">${esc(config.inviteLine)}</p>
+    <p class="invite-line lead" data-reveal style="--i:2">${esc(config.inviteLine)}</p>
 
     <div class="person" data-reveal style="--i:3">
-      <h2 class="person__name">${esc(groom.name)}</h2>
+      <h2 class="person__name heading">${esc(groom.name)}</h2>
       <p class="person__parents">${esc(groom.parents)}</p>
     </div>
 
     <div class="with" data-draw>
       <img class="with__motif" src="art/motif-l.webp" alt="" loading="lazy">
-      <span class="with__word">with</span>
+      <span class="with__word joiner">with</span>
       <img class="with__motif with__motif--r" src="art/motif-r.webp" alt="" loading="lazy">
     </div>
 
     <div class="person" data-reveal>
-      <h2 class="person__name">${esc(bride.name)}</h2>
+      <h2 class="person__name heading">${esc(bride.name)}</h2>
       <p class="person__parents">${esc(bride.parents)}</p>
     </div>
   </section>`;
@@ -153,25 +154,26 @@ const details = `
     <h2 class="visually-hidden" id="details-title">Wedding details</h2>
 
     <div class="date-row" data-reveal style="--i:1">
-      <p class="date-row__side">${esc(w.dayName)}</p>
+      <p class="date-row__side caption">${esc(w.dayName)}</p>
       <p class="date-row__center">
-        <span class="date-row__month">${esc(w.month)}</span>
-        <span class="date-row__day">${esc(w.day)}</span>
-        <span class="date-row__year">${esc(w.year)}</span>
+        <span class="date-row__month caption">${esc(w.month)}</span>
+        <span class="date-row__day display">${esc(w.day)}</span>
+        <span class="date-row__year caption">${esc(w.year)}</span>
       </p>
-      <p class="date-row__side date-row__time">${esc(w.startsAt)}</p>
+      <p class="date-row__side date-row__time caption">${esc(w.startsAt)}</p>
     </div>
 
     <div class="muhurtham" data-reveal style="--i:2">
+      <p class="telugu" lang="te">ముహూర్తం</p>
       <p class="eyebrow">Muhurtham</p>
-      <p class="muhurtham__time">${esc(w.muhurtham)}</p>
-      <p class="muhurtham__after">${esc(w.afterMuhurtham)}</p>
+      <p class="muhurtham__time heading">${esc(w.muhurtham)}</p>
+      <p class="muhurtham__after lead">${esc(w.afterMuhurtham)}</p>
     </div>
 
     <div class="venue" data-reveal style="--i:3">
       <p class="eyebrow">Venue</p>
-      <p class="venue__name">${esc(venue.name)}</p>
-      <p class="venue__city">${esc(venue.city)}</p>
+      <p class="venue__name heading">${esc(venue.name)}</p>
+      <p class="venue__city caption">${esc(venue.city)}</p>
       <a class="btn btn--light" href="${esc(venue.mapUrl)}" target="_blank" rel="noopener noreferrer">
         View on map <span aria-hidden="true">↗</span>
       </a>
@@ -189,11 +191,11 @@ const countdown = `
       <div class="countdown__grid" data-reveal style="--i:1" role="timer" aria-live="off">
         ${["days", "hours", "minutes", "seconds"]
           .map(
-            (u) => `<div class="unit"><span class="unit__num" data-unit="${u}">–</span><span class="unit__label">${u}</span></div>`
+            (u) => `<div class="unit"><span class="unit__num display" data-unit="${u}">–</span><span class="unit__label caption">${u}</span></div>`
           )
           .join("")}
       </div>
-      <p class="countdown__done" hidden>Married on ${esc(w.dateLong)} · with your blessings</p>
+      <p class="countdown__done heading" hidden>Married on ${esc(w.dateLong)} · with your blessings</p>
     </div>
     <div class="rule rule--edge" data-draw aria-hidden="true"></div>
   </section>`;
@@ -201,12 +203,12 @@ const countdown = `
 const calendar = `
   <section class="section save" id="calendar" aria-labelledby="calendar-title">
     <p class="eyebrow" data-reveal>Save the evening</p>
-    <h2 class="save__title" id="calendar-title" data-reveal style="--i:1">Add it to your calendar</h2>
+    <h2 class="save__title heading" id="calendar-title" data-reveal style="--i:1">Add it to your calendar</h2>
     <div class="save__actions" data-reveal style="--i:2">
       <a class="btn" href="wedding.ics" download="Tarun-Priyamvada-Wedding.ics">Apple · Outlook</a>
       <a class="btn btn--light" href="${esc(googleCalendarUrl(config))}" target="_blank" rel="noopener noreferrer">Google Calendar</a>
     </div>
-    <p class="save__note" data-reveal style="--i:3">${esc(w.dateLong)} · ${esc(w.startsAt)} (IST)</p>
+    <p class="save__note caption" data-reveal style="--i:3">${esc(w.dateLong)}&nbsp;· ${esc(w.startsAt)} (IST)</p>
   </section>`;
 
 const closing = `
@@ -220,15 +222,15 @@ const closing = `
         `<div class="glow" aria-hidden="true"></div>`
       )}
       <p class="telugu closing__blessing" lang="te" data-reveal>${esc(config.closing.blessing)}</p>
-      <p class="closing__line" data-reveal style="--i:1">${esc(config.closing.line)}</p>
-      <p class="closing__names" data-reveal style="--i:2">${esc(groom.firstName)} &amp; ${esc(bride.firstName)}</p>
+      <p class="closing__line lead" data-reveal style="--i:1">${esc(config.closing.line)}</p>
+      <p class="closing__names heading" data-reveal style="--i:2">${esc(groom.firstName)} &amp; ${esc(bride.firstName)}</p>
       <div class="closing__plants" aria-hidden="true">
         <div class="banana" data-draw><div class="sway">${img("banana-l", "", false)}</div></div>
         <div class="banana banana--r" data-draw><div class="sway">${img("banana-r", "", false)}</div></div>
       </div>
     </div>
     <div class="rule rule--edge" data-draw aria-hidden="true"></div>
-    <p class="credit">${esc(config.artCredit)}</p>
+    <p class="credit caption">${esc(config.artCredit)}</p>
   </footer>`;
 
 const musicToggle = music.src

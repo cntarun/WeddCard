@@ -1,7 +1,7 @@
 # Tarun & Priyamvada — Wedding Invitation
 
-A single-page wedding invitation built from **Bapu's wedding paintings**: white
-paper, a mango-leaf thoranam, the ornate red-and-yellow arch, banana plants,
+A single-page wedding invitation built from **Bapu's wedding paintings**, set
+on warm ivory card stock with a faint block-print motif: a mango-leaf thoranam, the ornate red-and-yellow arch, banana plants,
 blue kolam motifs and the painted border band. Each painting was cut into
 layers so every piece can move on its own.
 
@@ -41,11 +41,8 @@ All wording, names, times, the venue and the map link live in
 it. Search for `[TODO]` to see what's still open:
 
 1. **Title** — `title` (browser tab + link preview).
-2. **Music** — put an MP3 in `public/audio/` and set `music.src`
-   (e.g. `"audio/our-song.mp3"`), plus `title` / `artist`. The button appears
-   by itself and the song fades in when the invitation is opened.
-3. **Venue spelling** — the card reads "Jal Vihaar"; the venue itself spells
-   it "Jalavihar".
+2. **Music** — to change the song, replace the MP3 in `public/audio/` and
+   update `music.src` / `title` / `artist`.
 
 The calendar entry runs 4:00 PM – 11:00 PM IST; change `wedding.endISO` if
 the evening ends at a different time.
@@ -56,18 +53,41 @@ the evening ends at a different time.
 src/
 ├── config.js     ← all content
 ├── main.js       ← page, reveal-on-scroll, countdown, music
+├── fonts.css     ← @font-face for the self-hosted fonts
 ├── calendar.js   ← .ics file + Google Calendar link
 └── style.css     ← palette, type, animation
 public/
 ├── art/          ← the painting layers (colour + ink), thoranam and band tiles
+├── fonts/        ← Fraunces, Jost, Noto Serif Telugu (woff2)
+├── audio/        ← the song
 ├── og-image.jpg  ← WhatsApp / social preview (1200×630)
 └── favicon.svg
 ```
 
 **Palette** (sampled from the paintings; tokens at the top of `style.css`):
 vermilion `#E23823`, turmeric-lemon `#FEFC55`, leaf green `#2F7A3A`,
-kolam blue `#3F4AAE`, banana-flower pink `#E0457B`, on white.
-**Type**: Rozha One (names), EB Garamond (text), Gurajada (Telugu).
+kolam blue `#3F4AAE`, banana-flower pink `#E0457B`, on ivory `#FBF6EC`.
+
+## Typography
+
+Traditional meets modern, with type doing the bridging:
+
+- **Fraunces** (SemiBold, with its italic for "&" and "with") — the couple's
+  names and headings: warm and substantial, where the heritage lives.
+- **Jost** (Light / Regular) — everything else: body text, tracked uppercase
+  labels, buttons. Clean and editorial, the Paperless Post voice.
+- **Noto Serif Telugu** (Medium) — every Telugu line, matched in weight and
+  contrast to Fraunces, with a 1.5–1.6 line height.
+
+Every size is one of four steps, set as tokens at the top of `style.css`:
+`--fs-display` (names, the date, countdown), `--fs-heading` (section titles,
+venue, Muhurtham time), `--fs-body`, `--fs-caption` (uppercase, tracked
+`0.32em`). Telugu uses the heading step with an optical factor
+(`--te-optical`). Use the classes `.display`, `.heading`, `.caption`, `.lead`,
+`.joiner` and `.telugu` rather than setting font sizes directly.
+
+The fonts are self-hosted from `public/fonts/` (Latin and Telugu subsets only,
+164 KB, SIL Open Font License), so the Telugu never depends on a third party.
 
 ## How the paintings move
 
