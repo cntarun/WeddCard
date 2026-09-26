@@ -14,6 +14,9 @@ const hostLine = (s) =>
     .split(" & ")
     .map((part, i, all) => `<span class="nowrap">${withLate(part)}${i < all.length - 1 ? " &amp;" : ""}</span>`)
     .join(" ");
+// "son of" stays quiet; the parents' names are set like the hosts'.
+const parentsLine = (p) =>
+  `<span class="person__relation">${esc(p.relation)}</span> <span class="family-names">${hostLine(p.parents)}</span>`;
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -127,13 +130,13 @@ const invitation = `
 
     <p class="invite-lead lead" data-reveal>${esc(config.blessingLine)},</p>
     <div class="hosts" data-reveal style="--i:1">
-      ${config.hosts.map((h) => `<p>${hostLine(h)}</p>`).join("")}
+      ${config.hosts.map((h) => `<p class="family-names">${hostLine(h)}</p>`).join("")}
     </div>
     <p class="invite-line lead" data-reveal style="--i:2">${esc(config.inviteLine)}</p>
 
     <div class="person" data-reveal style="--i:3">
       <h2 class="person__name heading">${esc(groom.name)}</h2>
-      <p class="person__parents">${esc(groom.parents)}</p>
+      <p class="person__parents">${parentsLine(groom)}</p>
     </div>
 
     <div class="with" data-draw>
@@ -144,7 +147,7 @@ const invitation = `
 
     <div class="person" data-reveal>
       <h2 class="person__name heading">${esc(bride.name)}</h2>
-      <p class="person__parents">${esc(bride.parents)}</p>
+      <p class="person__parents">${parentsLine(bride)}</p>
     </div>
   </section>`;
 

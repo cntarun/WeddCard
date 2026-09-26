@@ -961,16 +961,30 @@ img {
    INVITATION
    ============================================================ */
 
-.hosts {
-  line-height: 1.8;
+/* the grandparents' and parents' names: the couple's serif, smaller and in
+   warm dark brown rather than red, so they read clearly without competing */
+.family-names {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-variation-settings: "opsz" 144;
+  font-size: calc(var(--fs-heading) * 0.64);
+  line-height: 1.4;
+  word-spacing: 0.08em;
+  color: var(--text);
 }
 
-.hosts .nowrap {
+.family-names .nowrap {
   white-space: nowrap;
 }
 
-.hosts em {
+.family-names em {
+  font-weight: 500;
   color: var(--text-soft);
+}
+
+.hosts {
+  display: grid;
+  gap: 0.5rem;
 }
 
 .invite-lead {
@@ -986,8 +1000,18 @@ img {
 }
 
 .person__parents {
-  margin-top: 0.8rem;
+  margin-top: 0.7rem;
+}
+
+.person__relation {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-style: italic;
   color: var(--text-soft);
+}
+
+.person__parents .family-names {
+  display: block;
 }
 
 .with {

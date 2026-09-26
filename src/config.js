@@ -29,12 +29,14 @@ export const config = {
   groom: {
     name: "Tarun Chellaboyina",
     firstName: "Tarun",
-    parents: "son of Dr. S. Kalyani & Dr. C. N. Chandra Sekhar",
+    relation: "son of",
+    parents: "Dr. S. Kalyani & Dr. C. N. Chandra Sekhar",
   },
   bride: {
     name: "Priyamvada Mahesh",
     firstName: "Priyamvada",
-    parents: "daughter of Smt. Geetha & Dr. Mahesh Krishnaswamy",
+    relation: "daughter of",
+    parents: "Smt. Geetha & Dr. Mahesh Krishnaswamy",
   },
 
   wedding: {

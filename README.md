@@ -82,7 +82,9 @@ kolam blue `#3F4AAE`, banana-flower pink `#E0457B`, on ivory `#FBF6EC`.
 Traditional meets modern, with type doing the bridging:
 
 - **Fraunces** (SemiBold, with its italic for "&" and "with") — the couple's
-  names and headings: warm and substantial, where the heritage lives.
+  names and headings: warm and substantial, where the heritage lives. The
+  grandparents' and parents' names use it too, smaller and in dark brown
+  (`.family-names`), beneath a quiet italic "son of" / "daughter of".
 - **Jost** (Light / Regular) — everything else: body text, tracked uppercase
   labels, buttons. Clean and editorial, the Paperless Post voice.
 - **Noto Serif Telugu** (Medium) — every Telugu line, matched in weight and
